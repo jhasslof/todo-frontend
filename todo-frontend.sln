@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "webui", "webui\webui.csproj", "{E705BCF0-D3A2-45DB-A266-8E8D4BEE85ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "webui", "webui\webui.csproj", "{E705BCF0-D3A2-45DB-A266-8E8D4BEE85ED}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "webui.test", "webui.test\webui.test.csproj", "{5F9F46AF-B07D-49EF-8180-9B568F744854}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,9 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{E705BCF0-D3A2-45DB-A266-8E8D4BEE85ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -30,5 +29,23 @@ Global
 		{E705BCF0-D3A2-45DB-A266-8E8D4BEE85ED}.Release|x64.Build.0 = Release|Any CPU
 		{E705BCF0-D3A2-45DB-A266-8E8D4BEE85ED}.Release|x86.ActiveCfg = Release|Any CPU
 		{E705BCF0-D3A2-45DB-A266-8E8D4BEE85ED}.Release|x86.Build.0 = Release|Any CPU
+		{5F9F46AF-B07D-49EF-8180-9B568F744854}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F9F46AF-B07D-49EF-8180-9B568F744854}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F9F46AF-B07D-49EF-8180-9B568F744854}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5F9F46AF-B07D-49EF-8180-9B568F744854}.Debug|x64.Build.0 = Debug|Any CPU
+		{5F9F46AF-B07D-49EF-8180-9B568F744854}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5F9F46AF-B07D-49EF-8180-9B568F744854}.Debug|x86.Build.0 = Debug|Any CPU
+		{5F9F46AF-B07D-49EF-8180-9B568F744854}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F9F46AF-B07D-49EF-8180-9B568F744854}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F9F46AF-B07D-49EF-8180-9B568F744854}.Release|x64.ActiveCfg = Release|Any CPU
+		{5F9F46AF-B07D-49EF-8180-9B568F744854}.Release|x64.Build.0 = Release|Any CPU
+		{5F9F46AF-B07D-49EF-8180-9B568F744854}.Release|x86.ActiveCfg = Release|Any CPU
+		{5F9F46AF-B07D-49EF-8180-9B568F744854}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4D51D4EA-0E8A-4BB9-AB9C-43BE229A7209}
 	EndGlobalSection
 EndGlobal
