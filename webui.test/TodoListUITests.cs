@@ -14,43 +14,39 @@ namespace webui.test
 {
     public class TodoListUITests : UITestBase
     {
+        public TodoListUITests(SeleniumServerFactory<Startup> server) : base(server)
+        {
+        }
+
         [Fact]
         public void TodoList_ViewStartpage_Succeed()
         {
-            using (var driver = this.NewBrowserDriver())
-            {
+            Browser.Navigate().GoToUrl(Server.RootUri);
 
-                driver.Navigate().GoToUrl(this.BaseUri);
-
-                var headline = driver.FindElementById("ListHeadline");
-                Assert.Equal("Things todo", headline.Text);
-            }
+            var headline = Browser.FindElementById("ListHeadline");
+            Assert.Equal("Things todo", headline.Text);
         }
 
         [Fact]
         public void TodoList_AssertTodoItemRows_MatchingAppsettingTestData()
         {
-            using (var driver = this.NewBrowserDriver())
-            {
-                driver.Navigate().GoToUrl(this.BaseUri);
+            Browser.Navigate().GoToUrl(Server.RootUri);
 
-                var rows = driver.FindElementsByXPath("//table/tbody/tr");
-                int assertedRows = 0;
-                foreach (var itemToAssert in TestConfiguration.TestData.rowItems)
+            var rows = Browser.FindElementsByXPath("//table/tbody/tr");
+            int assertedRows = 0;
+            foreach (var itemToAssert in TestConfiguration.TestData.rowItems)
+            {
+                foreach (var row in rows)
                 {
-                    foreach (var row in rows)
+                    var columns = row.FindElements(By.TagName("td"));
+                    if (columns[0].Text == itemToAssert.Id)
                     {
-                        var columns = row.FindElements(By.TagName("td"));
-                        if (columns[0].Text == itemToAssert.Id)
-                        {
-                            Assert.Equal(itemToAssert.Name, columns[1].Text);
-                            assertedRows++;
-                        }
+                        Assert.Equal(itemToAssert.Name, columns[1].Text);
+                        assertedRows++;
                     }
                 }
-
-                Assert.Equal(TestConfiguration.TestData.rowItems.Count(), assertedRows);
             }
+            Assert.Equal(TestConfiguration.TestData.rowItems.Count(), assertedRows);
         }
 
         [Theory]
@@ -58,32 +54,26 @@ namespace webui.test
         [InlineData("3", "Code new demo")]
         public void TodoList_AssertTodoItemRows_MatchingInlineData(string idToFind, string nameToFind)
         {
-            using (var driver = this.NewBrowserDriver())
-            {
-                driver.Navigate().GoToUrl(this.BaseUri);
+            Browser.Navigate().GoToUrl(Server.RootUri);
 
-                var rowColumnsToFind = driver.FindElementsByXPath("//table/tbody/tr")
-                       .SingleOrDefault(r => r.FindElements(By.TagName("td"))[0].Text == idToFind).FindElements(By.TagName("td"));
+            var rowColumnsToFind = Browser.FindElementsByXPath("//table/tbody/tr")
+                   .SingleOrDefault(r => r.FindElements(By.TagName("td"))[0].Text == idToFind).FindElements(By.TagName("td"));
 
-                Assert.Equal(idToFind, rowColumnsToFind.ElementAt(0).Text);
-                Assert.Equal(nameToFind, rowColumnsToFind.ElementAt(1).Text);
-            }
+            Assert.Equal(idToFind, rowColumnsToFind.ElementAt(0).Text);
+            Assert.Equal(nameToFind, rowColumnsToFind.ElementAt(1).Text);
         }
 
         [Theory]
         [MemberData(nameof(InlineAppsettingTestData.Items), MemberType = typeof(InlineAppsettingTestData))]
         public void TodoList_AssertTodoItemRows_MatchingInlineDataFromAppsetting(string idToFind, string nameToFind)
         {
-            using (var driver = this.NewBrowserDriver())
-            {
-                driver.Navigate().GoToUrl(this.BaseUri);
+            Browser.Navigate().GoToUrl(Server.RootUri);
 
-                var rowColumnsToFind = driver.FindElementsByXPath("//table/tbody/tr")
-                       .SingleOrDefault(r => r.FindElements(By.TagName("td"))[0].Text == idToFind).FindElements(By.TagName("td"));
+            var rowColumnsToFind = Browser.FindElementsByXPath("//table/tbody/tr")
+                   .SingleOrDefault(r => r.FindElements(By.TagName("td"))[0].Text == idToFind).FindElements(By.TagName("td"));
 
-                Assert.Equal(idToFind, rowColumnsToFind.ElementAt(0).Text);
-                Assert.Equal(nameToFind, rowColumnsToFind.ElementAt(1).Text);
-            }
+            Assert.Equal(idToFind, rowColumnsToFind.ElementAt(0).Text);
+            Assert.Equal(nameToFind, rowColumnsToFind.ElementAt(1).Text);
         }
     }
 }

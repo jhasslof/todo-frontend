@@ -1,25 +1,42 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Net.Http;
 using System.Threading;
 using Xunit;
 
 namespace webui.test
 {
-    public class UITestBase
+    public class UITestBase  : IClassFixture<SeleniumServerFactory<Startup>>, IDisposable
     {
+        public SeleniumServerFactory<Startup> Server { get; }
+
+        public ChromeDriver Browser { get; }
+
+        public HttpClient Client { get; }
+
+        public ILogs Logs { get; }
+
         public TodoListTestConfiguration TestConfiguration { get; private set; } = new TodoListTestConfiguration();
 
         public Uri BaseUri
         {
             get
             {
+                //only use when testing on remote service
                 return new Uri($"https://{TestConfiguration.ServiceHost.Name}:{TestConfiguration.ServiceHost.Port}");
             }
+        }
+
+        public UITestBase(SeleniumServerFactory<Startup> server)
+        {
+            Server = server;
+            Client = server.CreateClient(); //weird side effecty thing here. This call shouldn't be required for setup, but it is.
+
+            Browser = NewBrowserDriver();
         }
 
         protected ChromeDriver NewBrowserDriver()
@@ -42,6 +59,11 @@ namespace webui.test
 
             var driver = new ChromeDriver(AppDomain.CurrentDomain.BaseDirectory, chromeOptions);
             return driver;
+        }
+
+        public void Dispose()
+        {
+            Browser.Dispose();
         }
     }
 }
