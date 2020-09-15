@@ -13,7 +13,7 @@ namespace webui.test
 
     class UITestHelpers
     {
-        protected void WaitForElementByClassNameExists(ChromeDriver driver, string className)
+        public static void WaitForElementByClassNameExists(ChromeDriver driver, string className)
         {
             Thread.Sleep(1000);
             var timeout = 10000; // in milliseconds
@@ -21,7 +21,7 @@ namespace webui.test
             wait.Until(ExpectedConditions.ElementExists(By.ClassName(className)));
         }
 
-        protected void WaitForElementByIdExists(ChromeDriver driver, string id)
+        public static void WaitForElementByIdExists(ChromeDriver driver, string id)
         {
             Thread.Sleep(1000);
             var timeout = 10000; // in milliseconds
@@ -29,7 +29,7 @@ namespace webui.test
             wait.Until(ExpectedConditions.ElementExists(By.Id(id)));
         }
 
-        protected string GetRandomString(int length = 5)
+        public static string GetRandomString(int length = 5)
         {
             if (length > 31)
             {
@@ -38,7 +38,7 @@ namespace webui.test
             return Guid.NewGuid().ToString().Substring(1, length);
         }
 
-        //protected void LoginUser(ChromeDriver driver, Uri loginPage)
+        //public static void LoginUser(ChromeDriver driver, Uri loginPage)
         //{
         //    driver.Navigate().GoToUrl(loginPage);
         //    //WaitForElementByIdExists(driver, "UserName");
@@ -48,7 +48,7 @@ namespace webui.test
         //    driver.FindElementById("btnLogin").Click();
         //}
 
-        protected void NavigateTo(ChromeDriver driver, string menuItemName)
+        public static void NavigateTo(ChromeDriver driver, string menuItemName)
         {
             var menu = driver.FindElementByClassName("main-menu");
             var menuItems = menu.FindElements(By.ClassName("navigationElement"));
