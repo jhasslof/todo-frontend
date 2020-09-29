@@ -56,15 +56,50 @@ C:\..\todo-frontend\webui> dotnet run
     - Run the test plan and examine the results.
     - Make changes in the assert pages and see how that affect the test result
 
-# Run Load Test from command line
-* [Use CLI mode](https://jmeter.apache.org/usermanual/best-practices.html#lean_mean)
+## Examine how parameters are used
+- *Ref:  https://www.blazemeter.com/blog/jmeter-parameterization-the-complete-guide*
 
-`TODO: Add parameters and testresult output here`
- 
+## Configure JMeter to overwrite result data
+Open file `...\jmeter\bin\jmeter.properties\jmeter.properties` and set property:
+```
+resultcollector.action_if_file_exists=DELETE
+```
+* *Ref: http://sqa.fyicenter.com/1000074_Auto_Flush_JMeter_Test_Result_to_File.html*
+
+## View test result data as table in VS Code
+
+1. Add the VS Code extension [Edit csv](https://marketplace.visualstudio.com/items?itemName=janisdd.vscode-edit-csv)
+2. Open the csv result file in VS Code and select `edit as csv`
+
+## Run the Load Test from command line
+* [Use CLI mode](https://jmeter.apache.org/usermanual/best-practices.html#lean_mean)
+* [How to define properties on the command line](https://jmeter.apache.org/usermanual/functions.html#__P)
+* [JMeter data source CSV Data Set Config from command line](https://stackoverflow.com/questions/24931419/jmeter-data-source-csv-data-set-config-from-command-line)
+* [Properties Customization Guide](https://www.blazemeter.com/blog/apache-jmeter-properties-customization)
+
+### Example:
+1. Open powershell in this folder
+2. Run the commands
+```powershell
+# Distribure test to a temp folder
+mkdir c:\temp\jmeter-test
+mkdir c:\temp\jmeter-test\params
+mkdir c:\temp\jmeter-test\results
+cp .\webui-test-plan.jmx c:\temp\jmeter-test
+cp .\connection-parameters.csv c:\temp\jmeter-test\params
+cp .\todo-items-parameters.csv c:\temp\jmeter-test\params
+ls  c:\temp\jmeter-test
+ls  c:\temp\jmeter-test\params
+
+# Run test in the temp folder
+${env:JMETER_HOME} = 'C:\jmeter' # update to your local installation
+Push-Location ${env:JMETER_HOME}\bin
+.\jmeter -n -t 'c:\temp\jmeter-test\webui-test-plan.jmx' -JparamDir='c:\temp\jmeter-test\params' -JresultDir='c:\temp\jmeter-test\results'
+Pop-Location
+code C:\temp\jmeter-test\results\todo-webui-result.csv
+```
 
 # JMeter Best Practices
 * https://jmeter.apache.org/usermanual/best-practices.html
 
 
-* http://sqa.fyicenter.com/1000074_Auto_Flush_JMeter_Test_Result_to_File.html
---> Edit C:\jmeter\bin\jmeter.properties
