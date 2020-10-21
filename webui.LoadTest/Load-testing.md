@@ -33,10 +33,11 @@ C:\jmeter> .\bin\jmeter.bat
 ```
 1. Prepp testplan
     - Open testplan `..\webui.LoadTest\demo-jmeter-web-test-plan.jmx`
-    - Edit fields for `Filename` in  `Simple Data Writer` & `Summary Report` to match your fliesystem. 
+    - Edit fields for `Filename` in  `Simple Data Writer` to match your fliesystem. 
 2. Run testplan and examine result
     - Run the test plan and examine the results.
     - Make changes in the assert pages and see how that affect the test result
+3. Examine the `jmeter.log` file to see that there are no errors.
 
 - *Ref: https://jmeter.apache.org/usermanual/build-web-test-plan.html*
 
@@ -44,7 +45,7 @@ C:\jmeter> .\bin\jmeter.bat
 
 1. Prepp testplan
     - Open the testplan  `..\webui.LoadTest\webui-test-plan.jmx`
-    - Edit fields for `Filename` in  `Simple Data Writer`, `Summary Report`& `Aggregate Graph` to match your fliesystem. 
+    - Edit fields for `Filename` in `Site Connection Config`, `Todo Items Config` & `Simple Data Writer` to match your fliesystem.  
 2. Start the Todo application
 ```powershell
 C:\..\todo-frontend> cd .\webui
