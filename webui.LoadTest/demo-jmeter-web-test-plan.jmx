@@ -167,7 +167,7 @@ Connect to 5s</stringProp>
               <connectTime>true</connectTime>
             </value>
           </objProp>
-          <stringProp name="filename">C:\r\github\jhasslof\todo-frontend\webui.ApiTest\results\demo-jmeter-result.xml</stringProp>
+          <stringProp name="filename">C:\r\github\todo-frontend\webui.LoadTest\results\demo-jmeter-result.csv</stringProp>
         </ResultCollector>
         <hashTree/>
         <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report" enabled="true">
@@ -204,7 +204,7 @@ Connect to 5s</stringProp>
               <connectTime>true</connectTime>
             </value>
           </objProp>
-          <stringProp name="filename">C:\r\github\jhasslof\todo-frontend\webui.ApiTest\results\demo-jmeter-result.xml</stringProp>
+          <stringProp name="filename">C:\r\github\todo-frontend\webui.LoadTest\results\demo-jmeter-result.csv</stringProp>
         </ResultCollector>
         <hashTree/>
       </hashTree>

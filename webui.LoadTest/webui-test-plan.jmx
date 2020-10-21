@@ -32,7 +32,7 @@ Make test last 1 minute (see Scheduler)</stringProp>
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Site Connection Config" enabled="true">
           <stringProp name="delimiter">,</stringProp>
           <stringProp name="fileEncoding"></stringProp>
-          <stringProp name="filename">${__P(paramDir,C:/r/github/jhasslof/todo-frontend/webui.LoadTest)}/connection-parameters.csv</stringProp>
+          <stringProp name="filename">${__P(paramDir,C:/r/github/todo-frontend/webui.LoadTest)}/connection-parameters.csv</stringProp>
           <boolProp name="ignoreFirstLine">false</boolProp>
           <boolProp name="quotedData">false</boolProp>
           <boolProp name="recycle">true</boolProp>
@@ -125,7 +125,7 @@ Connect to 5s</stringProp>
           </ResponseAssertion>
           <hashTree/>
           <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Todo Items Config" enabled="true">
-            <stringProp name="filename">${__P(paramDir,C:/r/github/jhasslof/todo-frontend/webui.LoadTest)}/todo-items-parameters.csv</stringProp>
+            <stringProp name="filename">${__P(paramDir,C:/r/github/todo-frontend/webui.LoadTest)}/todo-items-parameters.csv</stringProp>
             <stringProp name="fileEncoding"></stringProp>
             <stringProp name="variableNames">itemId,itemName</stringProp>
             <boolProp name="ignoreFirstLine">false</boolProp>
@@ -171,7 +171,7 @@ Connect to 5s</stringProp>
               <connectTime>true</connectTime>
             </value>
           </objProp>
-          <stringProp name="filename">${__P(resultDir,C:/r/github/jhasslof/todo-frontend/webui.LoadTest/results)}/todo-webui-result.csv</stringProp>
+          <stringProp name="filename">${__P(resultDir,C:/r/github/todo-frontend/webui.LoadTest/results)}/todo-webui-result.csv</stringProp>
         </ResultCollector>
         <hashTree/>
         <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
