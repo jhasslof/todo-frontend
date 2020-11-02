@@ -51,8 +51,13 @@ steps:
   inputs:
     command: 'test'
     projects: '**/webui.IntegrationTest.csproj'
-    arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+    arguments: '--configuration $(buildConfiguration) --results-directory $(Build.ArtifactStagingDirectory)/testresult --collect "Code coverage"'
     publishTestResults: true
+
+- task: PublishTestResults@2
+  inputs:
+    testRunner: VSTest
+    testResultsFiles: '$(Build.ArtifactStagingDirectory)/testresult/**/*.coverage'
 
 - task: DotNetCoreCLI@2
   displayName: 'Publish webiste artifact'
@@ -60,16 +65,11 @@ steps:
     command: 'publish'
     projects: '**/webui.csproj'
     publishWebProjects: false
-    arguments: '--no-build --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    arguments: '--no-build --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/web'
     zipAfterPublish: true
-
-- task: PublishTestResults@2
-  inputs:
-    testRunner: VSTest
-    testResultsFiles: '**/*.trx'
     
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/web'
     ArtifactName: 'todo-web'
     publishLocation: 'Container'
