@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "chromedriver": "^86.0.0"
+  }
+}
