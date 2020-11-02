@@ -51,13 +51,8 @@ steps:
   inputs:
     command: 'test'
     projects: '**/webui.IntegrationTest.csproj'
-    arguments: '--configuration $(buildConfiguration) --results-directory $(Build.ArtifactStagingDirectory)/testresult --collect "Code coverage"'
+    arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
     publishTestResults: true
-
-- task: PublishTestResults@2
-  inputs:
-    testRunner: VSTest
-    testResultsFiles: '$(Build.ArtifactStagingDirectory)/testresult/**/*.coverage'
 
 - task: DotNetCoreCLI@2
   displayName: 'Publish webiste artifact'
