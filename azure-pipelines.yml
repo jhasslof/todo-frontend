@@ -21,24 +21,40 @@ steps:
     packageType: runtime
 
 - task: DotNetCoreCLI@2
+  displayName: 'Restore website dependencies'
   inputs:
     command: 'restore'
-    projects: '**/webui.csproj,**/webui.IntegrationTest.csproj'
+    projects: '**/webui.csproj'
 
 - task: DotNetCoreCLI@2
-  displayName: 'Build the project - $(buildConfiguration)'
+  displayName: 'Restore integration test dependencies'
+  inputs:
+    command: 'restore'
+    projects: '**/webui.IntegrationTest.csproj'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build website - $(buildConfiguration)'
   inputs:
     command: 'build'
     arguments: '--no-restore --configuration $(buildConfiguration)'
-    projects: '**/webui.csproj,**/webui.IntegrationTest.csproj'
+    projects: '**/webui.csproj'
 
 - task: DotNetCoreCLI@2
+  displayName: 'Build integration tests - $(buildConfiguration)'
+  inputs:
+    command: 'build'
+    arguments: '--no-restore --configuration $(buildConfiguration)'
+    projects: '**/webui.IntegrationTest.csproj'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Run integration tests'
   inputs:
     command: 'test'
     projects: '**/webui.IntegrationTest.csproj'
     publishTestResults: true
 
 - task: DotNetCoreCLI@2
+  displayName: 'Publish webiste artifact'
   inputs:
     command: 'publish'
     projects: '**/webui.csproj'
