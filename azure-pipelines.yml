@@ -7,7 +7,7 @@ trigger:
 - master
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'ubuntu-18.04'
 
 variables:
   solution: '**/*.sln'
@@ -15,33 +15,35 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: NuGetToolInstaller@1
-
-- task: NuGetCommand@2
+- task: UseDotNet@2
   inputs:
-    restoreSolution: '$(solution)'
+    version: '3.1.x'
+    packageType: runtime
 
-- task: VSBuild@1
+- task: DotNetCoreCLI@2
   inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    command: 'restore'
+    projects: '**/webui.csproj,**/webui.IntegrationTest.csproj'
 
-- task: VSTest@2
+- task: DotNetCoreCLI@2
+  displayName: 'Build the project - $(buildConfiguration)'
   inputs:
-    testSelector: 'testAssemblies'
-    testAssemblyVer2: |
-      **\*TodoListIntegrationTests*.dll
-      !**\*TestAdapter.dll
-      !**\obj\**
-    searchFolder: '$(System.DefaultWorkingDirectory)'
-    configuration: '$(buildConfiguration)'
-    otherConsoleOptions: '/Framework:.NETCoreApp,Version=3.1'
+    command: 'build'
+    arguments: '--no-restore --configuration $(buildConfiguration)'
+    projects: '**/webui.csproj,**/webui.IntegrationTest.csproj'
 
-- task: PublishBuildArtifacts@1
+- task: DotNetCoreCLI@2
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'todo-web'
-    publishLocation: 'Container'
+    command: 'test'
+    projects: '**/webui.IntegrationTest.csproj'
+    publishTestResults: true
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    projects: '**/webui.csproj'
+    publishWebProjects: false
+    arguments: '--no-build --configuration $(buildConfiguration) --output $(build.artifactStagingDirectory)/$(buildConfiguration)'
+    zipAfterPublish: true
+
 
