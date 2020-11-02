@@ -37,6 +37,7 @@ steps:
       !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
     configuration: '$(buildConfiguration)'
+    otherConsoleOptions: '/Framework:.NETCoreApp,Version=3.1'
 
 - task: PublishBuildArtifacts@1
   inputs:
