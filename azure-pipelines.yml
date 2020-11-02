@@ -51,6 +51,7 @@ steps:
   inputs:
     command: 'test'
     projects: '**/webui.IntegrationTest.csproj'
+    arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
     publishTestResults: true
 
 - task: DotNetCoreCLI@2
