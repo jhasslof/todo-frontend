@@ -60,7 +60,7 @@ steps:
     command: 'publish'
     projects: '**/webui.csproj'
     publishWebProjects: false
-    arguments: '--no-build --configuration $(buildConfiguration) --logger trx --output $(Build.ArtifactStagingDirectory)'
+    arguments: '--no-build --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: true
 
 - task: PublishTestResults@2
