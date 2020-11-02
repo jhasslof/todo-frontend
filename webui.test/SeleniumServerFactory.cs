@@ -56,7 +56,7 @@ namespace webui.test
         {
             var builder = WebHost.CreateDefaultBuilder(Array.Empty<string>()) //TODO: Read the settings from webui.test appsettings.json
                             .UseEnvironment("Development") // Enable environment = Development
-                            .UseSolutionRelativeContentRoot("webui"); // Enable loading CSS by setting content root to the STU project
+                            .UseSolutionRelativeContentRoot("webui"); // Enable loading CSS by setting content root to the SUT project
 
             builder.UseStartup<TStartup>(); // Use STU Startup.cs when starting the website. If you want to have a custom test startup
                                             // this is the place to inject another class.
