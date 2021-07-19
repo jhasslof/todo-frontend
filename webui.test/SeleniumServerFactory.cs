@@ -58,7 +58,7 @@ namespace webui.test
                             .UseEnvironment("Development") // Enable environment = Development
                             .UseSolutionRelativeContentRoot("webui"); // Enable loading CSS by setting content root to the SUT project
 
-            builder.UseStartup<TStartup>(); // Use STU Startup.cs when starting the website. If you want to have a custom test startup
+            builder.UseStartup<TStartup>(); // Use SUT Startup.cs when starting the website. If you want to have a custom test startup
                                             // this is the place to inject another class.
             return builder;
         }
