@@ -17,30 +17,50 @@ Thanks to:
 In branch `4-ui_tests_for_create_and_edit_views` we are going to use [selenium-standalone](https://www.npmjs.com/package/selenium-standalone) wich require:
 
 1. Verify your java installation is up to date.
+
+   Example: 
+
    ```powershell
    c:\> java -version
-   openjdk version "14.0.2" 2020-07-14
+   openjdk version "16.0.1"
    ```
+
   * If you need to install java:
-    * Download [jdk14](https://jdk.java.net/14/) as zip-file on Windows
+    * Download [jdk16](https://jdk.java.net/16/) as zip-file on Windows
     * Extract zip to `c:\java`
-    * Add bin folder to system `PATH` --> `C:\Java\jdk-14.0.2\bin`
+    * Add bin folder to system `PATH` --> `C:\java\jdk-16.0.1\bin`
 
 2. Install node.js + npm  
-   [Download and install node.js + npm](https://nodejs.org/en/download/)
+   [Download and install node.js + npm](https://nodejs.org/en/download/)  
+   
+   `Note:` This .mis-file installs both node.js and npm. "Choco install nodejs..." does not include npm. 
 
 3. Install npm package selenium-standalone as a global package
+   
    ```powershell
    npm install -g selenium-standalone@latest
    selenium-standalone install
    npm install chromedriver
    ```
+   
+   To address all `high severity vulnerabilities` (including breaking changes), run:
+   ```powershell
+   npm audit fix --force
+   ```
+
    test:
    ```powershell
    c:\> selenium-standalone start
    ```
    Accept jdk network access for all networks
 
+4. [Trust the ASP.NET Core HTTPS development certificate on Windows and macOS](https://docs.microsoft.com/en-us/aspnet/core/security/enforcing-ssl?view=aspnetcore-5.0&tabs=visual-studio#trust-the-aspnet-core-https-development-certificate-on-windows-and-macos) 
+
+   To trust the dotnet dev certificate, perform the one-time step:
+
+   ```powershell
+   dotnet dev-certs https --trust
+   ```
 
 # Usage
 
