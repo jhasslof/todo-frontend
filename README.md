@@ -1,4 +1,5 @@
 # ASP.NET Core MVC demo application with Selenium UI tests
+![Build Status](https://ketchdigital.visualstudio.com/todo-AppService/_apis/build/status/jhasslof.todo-frontend?branchName=main)
 
 ## Acknowledgements
 Thanks to:
@@ -9,7 +10,7 @@ Thanks to:
 
 ## Prerequisites
 
-* [.Net SDK 3.1](https://dotnet.microsoft.com/download/dotnet-core/3.1)
+* [.Net SDK 5.0](https://dotnet.microsoft.com/download/dotnet/5.0)
 * [Visual Studio 2019 16.4 or later](https://visualstudio.microsoft.com/downloads/?utm_medium=microsoft&utm_source=docs.microsoft.com&utm_campaign=inline+link&utm_content=download+vs2019) or [VSCode](https://code.visualstudio.com/download) with C# extensions
 * A Chrome browser that is up to date
 
@@ -104,6 +105,24 @@ _process = new Process()
                 }
             };
 ```
+
+# Continuous Integration
+
+1. Prepare an AzureDevops project for running your CI builds.  
+   * [Build Repositories](https://docs.microsoft.com/en-us/azure/devops/pipelines/repos/github?view=azure-devops&tabs=yaml)
+ 
+
+2. Create a build definition: `/.azure-pipelines.yml`and [Create a CI build](https://docs.microsoft.com/en-us/azure/devops/pipelines/repos/github?view=azure-devops&tabs=yaml#create-pipelines-in-multiple-azure-devops-organizations-and-projects) 
+
+   * [Azure Pipelines Tasks](https://github.com/microsoft/azure-pipelines-tasks)
+   * [YAML build file reference](https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema?view=azure-devops&tabs=schema%2Cparameter-schema) 
+   
+3. [Add PR CI validation](https://docs.microsoft.com/en-us/azure/devops/pipelines/repos/github?view=azure-devops&tabs=yaml#protected-branches)  
+
+4. [Add status badge to your readme file](https://docs.microsoft.com/en-us/azure/devops/pipelines/create-first-pipeline?view=azure-devops&tabs=net%2Ctfs-2018-2%2Cbrowser#add-a-status-badge-to-your-repository)  
+
+[![Build Status](https://ketchdigital.visualstudio.com/todo-AppService/_apis/build/status/jhasslof.todo-frontend?branchName=main)](https://ketchdigital.visualstudio.com/todo-AppService/_build/latest?definitionId=22&branchName=main)
+
 
 # Resources
 
