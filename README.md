@@ -145,6 +145,13 @@ _process = new Process()
 Jira App: [Azure Pipelines for Jira](https://marketplace.atlassian.com/apps/1220515/azure-pipelines-for-jira?hosting=cloud&tab=overview)  
 Tutorial: [Integrate with Jira Issue tracking](https://github.com/microsoft/azure-pipelines-jira/blob/master/tutorial.md)  
 
+* Can I also see builds performed by Azure Pipelines in Jira?  
+
+  `The integration currently supports traceability for deployments (releases) only. Viewing build information in Jira is not supported.`
+
+* Does the integration work for YAML Pipelines?  
+
+  `The integration currently supports traceability for deployments from classic releases only. Builds and deployments from YAML pipelines is not supported.`
 
 # Resources
 
