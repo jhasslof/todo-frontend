@@ -125,6 +125,7 @@ _process = new Process()
 
 # Integrate with Jira 
 
+## Integrate Github and Jira
 [Overview of Jira dev tools integration](https://support.atlassian.com/jira-cloud-administration/docs/integrate-with-development-tools/)  
 
 [Integrate Jira with GitHub](https://support.atlassian.com/jira-cloud-administration/docs/integrate-with-github/)  
@@ -137,6 +138,12 @@ _process = new Process()
 
 [Reference issues in your development work](https://support.atlassian.com/jira-software-cloud/docs/reference-issues-in-your-development-work/)  
 
+## Integrate Azure DevOps pipelines and Jira
+
+[Azure Pipelines integration with Jira Software](https://devblogs.microsoft.com/devops/azure-pipelines-integration-with-jira-software/)
+
+Jira App: [Azure Pipelines for Jira](https://marketplace.atlassian.com/apps/1220515/azure-pipelines-for-jira?hosting=cloud&tab=overview)  
+Tutorial: [Integrate with Jira Issue tracking](https://github.com/microsoft/azure-pipelines-jira/blob/master/tutorial.md)  
 
 
 # Resources
