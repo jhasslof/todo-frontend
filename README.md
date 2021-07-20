@@ -123,6 +123,21 @@ _process = new Process()
 
 [![Build Status](https://ketchdigital.visualstudio.com/todo-AppService/_apis/build/status/jhasslof.todo-frontend?branchName=main)](https://ketchdigital.visualstudio.com/todo-AppService/_build/latest?definitionId=22&branchName=main)
 
+# Integrate with Jira 
+
+[Overview of Jira dev tools integration](https://support.atlassian.com/jira-cloud-administration/docs/integrate-with-development-tools/)  
+
+[Integrate Jira with GitHub](https://support.atlassian.com/jira-cloud-administration/docs/integrate-with-github/)  
+
+[Setup the Github for Jira App](https://github.com/integrations/jira)  
+
+[Process issues with smart commits](https://support.atlassian.com/jira-software-cloud/docs/process-issues-with-smart-commits/)  
+
+[Enable Smart Commits in GitHub](https://support.atlassian.com/jira-cloud-administration/docs/enable-smart-commits/)  
+
+[Reference issues in your development work](https://support.atlassian.com/jira-software-cloud/docs/reference-issues-in-your-development-work/)  
+
+
 
 # Resources
 
