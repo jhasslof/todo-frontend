@@ -1,4 +1,4 @@
-﻿@model IEnumerable<webui.Models.TodoViewModel>
+﻿@model webui.Models.TodoViewModel
 
 @{
     ViewData["Title"] = "Todo";
@@ -13,19 +13,19 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+                @Html.DisplayNameForInnerType((webui.Models.TodoItemViewModel itemsModel) => itemsModel.Id)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameForInnerType((webui.Models.TodoItemViewModel itemsModel) => itemsModel.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsComplete)
+                @Html.DisplayNameForInnerType((webui.Models.TodoItemViewModel itemsModel) => itemsModel.IsComplete)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.todoItems) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Id)

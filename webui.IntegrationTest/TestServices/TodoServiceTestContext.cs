@@ -9,8 +9,9 @@ namespace webui.IntegrationTest.TestServices
     public class TodoServiceTestContext : Service.ITodoServiceContext
     {
         private IList<TodoItem> TodoItemsData { get; set; }
+        private IList<string> SupportedFeatureFlagsData { get; set; }
 
-        public TodoServiceTestContext(string[] todos)
+        public TodoServiceTestContext(string[] todos, string[] supportedFeatureFlags)
         {
             TodoItemsData = new List<TodoItem>();
             for (int i = 0; i < todos.Length; i++)
@@ -18,6 +19,8 @@ namespace webui.IntegrationTest.TestServices
                 string todo = todos[i];
                 TodoItemsData.Add(new TodoItem { Id = i + 1, Name = todo, IsComplete = false });
             }
+
+            SupportedFeatureFlagsData = new List<string>(supportedFeatureFlags);
         }
 
         public IEnumerable<TodoItem> TodoItems()
@@ -44,6 +47,11 @@ namespace webui.IntegrationTest.TestServices
         public void Create(TodoItem newItem)
         {
             throw new NotImplementedException();
+        }
+
+        public IEnumerable<string> SupportedFeatureFlags()
+        {
+            return SupportedFeatureFlagsData;
         }
     }
 }

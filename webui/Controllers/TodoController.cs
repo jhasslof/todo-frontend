@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using webui.Mapper;
 using webui.Service;
+using webui.Models;
 
 namespace webui.Controllers
 {
@@ -14,6 +13,8 @@ namespace webui.Controllers
     {
         private readonly ILogger<TodoController> _logger;
         private TodoServiceAgent ServiceAgent;
+        internal static LaunchDarkly.Sdk.Server.LdClient ldClient = new LaunchDarkly.Sdk.Server.LdClient("YOUR_SDK_KEY");
+        internal static readonly LaunchDarkly.Sdk.User ldUser = LaunchDarkly.Sdk.User.WithKey("administrator@test.com");
 
         public TodoController(ILogger<TodoController> logger, ITodoServiceContext serviceContext)
         {
@@ -24,15 +25,19 @@ namespace webui.Controllers
         // GET: TodoController
         public ActionResult Index()
         {
-            var todoItems = ServiceAgent.Todo().ToList().ConvertAll(new Converter<Service.Models.TodoItem, Models.TodoViewModel>(TodoModelViewMapper.Map));
-            return View(todoItems);
+            TodoViewModel viewModel = new TodoViewModel();
+            viewModel.todoItems = ServiceAgent.Todo().ToList().ConvertAll(new Converter<Service.Models.TodoItem, TodoItemViewModel>(TodoItemModelViewMapper.Map));
+            viewModel.featureFlags = ServiceAgent.SupportedFeatureFlags().ToList().ConvertAll(new Converter<string, FeatureFlagViewModel>(TodoItemModelViewMapper.Map));
+            return View(viewModel);
         }
 
         // GET: TodoController/Details/5
         public ActionResult Details(int id)
         {
-            var todoItem = TodoModelViewMapper.Map(ServiceAgent.Get(id));
-            return View(todoItem);
+            var itemDetails = new TodoItemDetailsViewModel();
+            itemDetails.TodoItem = TodoItemModelViewMapper.Map(ServiceAgent.Get(id));
+            itemDetails.featureFlags = ServiceAgent.SupportedFeatureFlags().ToList().ConvertAll(new Converter<string, FeatureFlagViewModel>(TodoItemModelViewMapper.Map));
+            return View(itemDetails);
         }
 
         // GET: TodoController/Create
@@ -60,8 +65,7 @@ namespace webui.Controllers
         // GET: TodoController/Edit/5
         public ActionResult Edit(int id)
         {
-            var originalItem = TodoModelViewMapper.Map(ServiceAgent.Get(id));
-            return View(originalItem);
+            return Details(id);
         }
 
         // POST: TodoController/Edit/5
@@ -82,7 +86,7 @@ namespace webui.Controllers
             }
             catch(Exception ex)
             {
-                return View(TodoModelViewMapper.Map(collection, ex));
+                return View(TodoItemModelViewMapper.Map(collection, ex));
             }
         }
 

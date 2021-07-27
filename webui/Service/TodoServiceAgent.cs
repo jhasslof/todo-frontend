@@ -39,5 +39,9 @@ namespace webui.Service
         {
             Context.Delete(id);
         }
+        internal IEnumerable<string> SupportedFeatureFlags()
+        {
+            return Context.SupportedFeatureFlags();
+        }
     }
 }

@@ -123,6 +123,14 @@ _process = new Process()
 
 [![Build Status](https://ketchdigital.visualstudio.com/todo-AppService/_apis/build/status/jhasslof.todo-frontend?branchName=main)](https://ketchdigital.visualstudio.com/todo-AppService/_build/latest?definitionId=22&branchName=main)
 
+# Add Launch Darkly Feature Flags
+
+1. Follow the [Getting started](https://docs.launchdarkly.com/home/getting-started/feature-flags) guide and create a feature flag at the Launch Darkly web site  
+2. [Install the SDK in your project][https://docs.launchdarkly.com/sdk/server-side/dotnet]  
+3. Add a [Feature Flag implementation](https://azuredevopslabs.com/labs/vstsextend/launchdarkly/)  
+* https://raw.githubusercontent.com/Microsoft/azuredevopslabs/master/labs/vstsextend/launchdarkly/codesnippet/HomeController.cs  
+
+
 # Integrate with Jira 
 
 ## Integrate Github and Jira
@@ -160,3 +168,5 @@ Tutorial: [Integrate with Jira Issue tracking](https://github.com/microsoft/azur
 * [Getting Started with xUnit.net](https://xunit.net/docs/getting-started/netfx/visual-studio)
 * [UI tests with Selenium and ASP.NET Core MVC](https://code-maze.com/automatic-ui-testing-selenium-asp-net-core-mvc/)
 * [Integration tests in ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-3.1)
+* [Learn Razor Pages](https://www.learnrazorpages.com/)  
+* [Simplify DisplayName Calls In Razor Views](https://khalidabuhakmeh.com/simplify-displayname-calls-in-razor) 

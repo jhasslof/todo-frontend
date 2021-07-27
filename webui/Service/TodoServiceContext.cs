@@ -10,6 +10,8 @@ namespace webui.Service
     {
         private IList<TodoItem> TodoItemsData { get; set; }
 
+        private readonly IEnumerable<string> supportedFeatureFlags = new[] { "todo-extra-info" };
+
         public TodoServiceContext()
         {
             TodoItemsData = new List<TodoItem>
@@ -62,6 +64,11 @@ namespace webui.Service
         private long NextFreeId()
         {
             return TodoItemsData.Max(i => i.Id.Value) + 1;
+        }
+
+        public IEnumerable<string> SupportedFeatureFlags()
+        {
+            return supportedFeatureFlags;
         }
     }
 }

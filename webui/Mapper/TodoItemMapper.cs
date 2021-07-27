@@ -6,11 +6,11 @@ namespace webui.Mapper
     {
         public static Service.Models.TodoItem Map(IFormCollection collection)
         {
-            var viewModel = TodoModelViewMapper.Map(collection);
+            var viewModel = TodoItemModelViewMapper.Map(collection);
             return Map(viewModel);
         }
 
-        public static Service.Models.TodoItem Map(webui.Models.TodoViewModel item)
+        public static Service.Models.TodoItem Map(webui.Models.TodoItemViewModel item)
         {
             return new Service.Models.TodoItem
             {
