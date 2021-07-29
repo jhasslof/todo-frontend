@@ -57,8 +57,8 @@ namespace webui.IntegrationTest
                                         "Bröd",
                                         "Ägg",
                                         "Ost"
-                                    }, 
-                                    new[] { 
+                                    },
+                                    new[] {
                                         "dummyFF"
                                     }
                                 )
@@ -87,52 +87,61 @@ namespace webui.IntegrationTest
             }
         }
 
-        //[Fact]
-        //public async Task Get_FeatureFlags_ReturnsListOfFeatureFlagsSuccessfully()
-        //{
-        //    string[] a = { "a", "b" };
+        enum ffs
+        {
+            notes
+        }
+        [Fact]
+        public void Enum_To_String()
+        {
+            Assert.Equal("notes", ffs.notes.ToString("g"));
+        }
+    //[Fact]
+    //public async Task Get_FeatureFlags_ReturnsListOfFeatureFlagsSuccessfully()
+    //{
+    //    string[] a = { "a", "b" };
 
-        //    // Arrange
-        //    var client = _factory.WithWebHostBuilder(builder =>
-        //    {
-        //        builder.ConfigureTestServices(services =>
-        //        {
-        //            services.AddScoped<ITodoServiceContext>(s => new TodoServiceTestContext(
-        //                    new[] {
-        //                        "Mjölk",
-        //                        "Smör",
-        //                        "Bröd",
-        //                        "Ägg",
-        //                        "Ost"
-        //                    },
-        //                    new[] {
-        //                        "dummyFF"
-        //                    }
-        //                )
-        //            );
-        //        }
-        //        );
-        //    }).CreateClient();
-        //    int numberOfRows = 5;
-        //    int numberOfColumns = 4;
-        //    int numberOfFeatureFlags = 1;
+    //    // Arrange
+    //    var client = _factory.WithWebHostBuilder(builder =>
+    //    {
+    //        builder.ConfigureTestServices(services =>
+    //        {
+    //            services.AddScoped<ITodoServiceContext>(s => new TodoServiceTestContext(
+    //                    new[] {
+    //                        "Mjölk",
+    //                        "Smör",
+    //                        "Bröd",
+    //                        "Ägg",
+    //                        "Ost"
+    //                    },
+    //                    new[] {
+    //                        "dummyFF"
+    //                    }
+    //                )
+    //            );
+    //        }
+    //        );
+    //    }).CreateClient();
+    //    int numberOfRows = 5;
+    //    int numberOfColumns = 4;
+    //    int numberOfFeatureFlags = 1;
 
-        //    // Act
-        //    var defaultPage = await client.GetAsync("/");
-        //    var content = await HtmlHelpers.GetDocumentAsync(defaultPage);
+    //    // Act
+    //    var defaultPage = await client.GetAsync("/");
+    //    var content = await HtmlHelpers.GetDocumentAsync(defaultPage);
 
-        //    //Assert
-        //    var tableElement = content.QuerySelector("table > tbody");
-        //    Assert.Equal(numberOfRows, tableElement.Children.Length);
-        //    foreach (var row in tableElement.Children)
-        //    {
-        //        Assert.Equal(numberOfColumns, row.Children.Length);
+    //    //Assert
+    //    var tableElement = content.QuerySelector("table > tbody");
+    //    Assert.Equal(numberOfRows, tableElement.Children.Length);
+    //    foreach (var row in tableElement.Children)
+    //    {
+    //        Assert.Equal(numberOfColumns, row.Children.Length);
 
-        //        var todoName = row.Children[1].TextContent;
-        //        Assert.IsType<string>(todoName);
-        //        Assert.False(string.IsNullOrEmpty(todoName));
-        //        Debug.WriteLine($"Todo: {todoName.Trim()}");
-        //    }
-        //}
-    }
+    //        var todoName = row.Children[1].TextContent;
+    //        Assert.IsType<string>(todoName);
+    //        Assert.False(string.IsNullOrEmpty(todoName));
+    //        Debug.WriteLine($"Todo: {todoName.Trim()}");
+    //    }
+    //}
+}
 }

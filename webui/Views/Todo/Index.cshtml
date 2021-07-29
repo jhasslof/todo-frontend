@@ -4,7 +4,18 @@
     ViewData["Title"] = "Todo";
 }
 
-<h1 class="display-4" id="ListHeadline">Things todo</h1>
+@{
+
+    if (Model.FeatureFlagIsActive("new-welcome-message"))
+    {
+        <h1 class="display-4" id="ListHeadline">The cool todo list</h1>
+    }
+    else
+    {
+        <h1 class="display-4" id="ListHeadline">Things todo</h1>
+    }
+}
+
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -25,22 +36,23 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.todoItems) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsComplete)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.todoItems)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsComplete)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

@@ -6,6 +6,8 @@ using Microsoft.Extensions.Logging;
 using webui.Mapper;
 using webui.Service;
 using webui.Models;
+using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 
 namespace webui.Controllers
 {
@@ -13,21 +15,46 @@ namespace webui.Controllers
     {
         private readonly ILogger<TodoController> _logger;
         private TodoServiceAgent ServiceAgent;
-        internal static LaunchDarkly.Sdk.Server.LdClient ldClient = new LaunchDarkly.Sdk.Server.LdClient("YOUR_SDK_KEY");
-        internal static readonly LaunchDarkly.Sdk.User ldUser = LaunchDarkly.Sdk.User.WithKey("administrator@test.com");
+        public IEnumerable<FeatureFlagViewModel> FeatureFlagsInUse;
+        private Settings Settings { get; set; }
 
-        public TodoController(ILogger<TodoController> logger, ITodoServiceContext serviceContext)
+        public TodoController(ILogger<TodoController> logger, ITodoServiceContext serviceContext, IConfiguration configuration)
         {
             ServiceAgent = new TodoServiceAgent(serviceContext);
+            Settings = new Settings(configuration);
+            FeatureFlagsInUse = InitializeFeatureFlagsInUse(ServiceAgent.SupportedFeatureFlags().ToList().ConvertAll(new Converter<string, FeatureFlagViewModel>(ViewModelFeatureFlagMapper.Map)));
             _logger = logger;
         }
 
-        // GET: TodoController
+        private IEnumerable<FeatureFlagViewModel> InitializeFeatureFlagsInUse(IEnumerable<FeatureFlagViewModel> serviceSupportedFeatureFlags)
+        {
+            //We can only use feature flags implemented by the controller
+            //UiOnly == true : Feature Flag is not used by the backend service
+            //UiOnly == false : We can only activate feature flags implemented by the controller and the backend service
+            var featurFlagsInUse = new List<FeatureFlagViewModel>();
+            foreach (var featureFlag in Settings.ControllerSupportedFeatureFlags)
+            {
+                if (featureFlag.UiOnly)
+                {
+                    featurFlagsInUse.Add(new FeatureFlagViewModel { Key = featureFlag.Key, UiOnly = true });
+                }
+                else if (serviceSupportedFeatureFlags.Contains(featureFlag))
+                {
+                    featurFlagsInUse.Add(new FeatureFlagViewModel { Key = featureFlag.Key });
+                }
+            }
+            foreach (var featureFlag in featurFlagsInUse)
+            {
+                featureFlag.State = Settings.LaunchDarklyCredentials.LdClient.BoolVariation(featureFlag.Key, Settings.LaunchDarklyCredentials.LdUser, false);
+            }
+            return featurFlagsInUse;
+        }
+
+         // GET: TodoController
         public ActionResult Index()
         {
             TodoViewModel viewModel = new TodoViewModel();
-            viewModel.todoItems = ServiceAgent.Todo().ToList().ConvertAll(new Converter<Service.Models.TodoItem, TodoItemViewModel>(TodoItemModelViewMapper.Map));
-            viewModel.featureFlags = ServiceAgent.SupportedFeatureFlags().ToList().ConvertAll(new Converter<string, FeatureFlagViewModel>(TodoItemModelViewMapper.Map));
+            viewModel.Map(ServiceAgent.Todo().ToList(), FeatureFlagsInUse);
             return View(viewModel);
         }
 
@@ -35,8 +62,7 @@ namespace webui.Controllers
         public ActionResult Details(int id)
         {
             var itemDetails = new TodoItemDetailsViewModel();
-            itemDetails.TodoItem = TodoItemModelViewMapper.Map(ServiceAgent.Get(id));
-            itemDetails.featureFlags = ServiceAgent.SupportedFeatureFlags().ToList().ConvertAll(new Converter<string, FeatureFlagViewModel>(TodoItemModelViewMapper.Map));
+            itemDetails.Map(ServiceAgent.Get(id), FeatureFlagsInUse);
             return View(itemDetails);
         }
 
@@ -53,7 +79,7 @@ namespace webui.Controllers
         {
             try
             {
-                ServiceAgent.Create(TodoItemMapper.Map(collection));
+                ServiceAgent.Create(new Service.Models.TodoItem().Map(collection, FeatureFlagsInUse));
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -80,13 +106,13 @@ namespace webui.Controllers
                     return View();
                 }
 
-                Service.Models.TodoItem editItem = TodoItemMapper.Map(collection);
+                Service.Models.TodoItem editItem = new Service.Models.TodoItem().Map(collection, FeatureFlagsInUse);
                 ServiceAgent.Update(editItem);
                 return RedirectToAction(nameof(Index));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                return View(TodoItemModelViewMapper.Map(collection, ex));
+                return View(new TodoItemDetailsViewModel().Map(collection, FeatureFlagsInUse, ex));
             }
         }
 
