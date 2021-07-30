@@ -6,13 +6,13 @@ using webui.Service.Models;
 
 namespace webui.Service
 {
-    public class TodoServiceContext : ITodoServiceContext
+    public class TodoServiceInMemoryContext : ITodoServiceContext
     {
         private IList<TodoItem> TodoItemsData { get; set; }
 
-        private readonly IEnumerable<string> supportedFeatureFlags = new[] { "todo-extra-info" };
+        private readonly IEnumerable<string> supportedFeatureFlags = new[] { "todo-extra-info" };  
 
-        public TodoServiceContext()
+        public TodoServiceInMemoryContext()
         {
             TodoItemsData = new List<TodoItem>
             {
