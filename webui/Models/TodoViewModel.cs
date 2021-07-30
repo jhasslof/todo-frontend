@@ -7,19 +7,20 @@ namespace webui.Models
 {
     public class ViewModelWithFeatureFlags
     {
-        public ViewModelWithFeatureFlags()
+        public ViewModelWithFeatureFlags(IEnumerable<FeatureFlagViewModel> featureFlags)
         {
+            FeatureFlags = featureFlags;
         }
-        public IEnumerable<FeatureFlagViewModel> featureFlags;
+        public IEnumerable<FeatureFlagViewModel> FeatureFlags;
         public bool FeatureFlagIsActive(string featureFlagKey)
         {
-            var flag = featureFlags.SingleOrDefault(f => f.Key == featureFlagKey);
+            var flag = FeatureFlags.SingleOrDefault(f => f.Key == featureFlagKey);
             return (flag == null ? false : flag.State);
         }
     }
      public class TodoViewModel : ViewModelWithFeatureFlags
     {
-        public TodoViewModel()
+        public TodoViewModel(IEnumerable<FeatureFlagViewModel> featureFlags):base(featureFlags)
         {
         }
 
@@ -28,7 +29,7 @@ namespace webui.Models
 
     public class TodoItemDetailsViewModel : ViewModelWithFeatureFlags
     {
-        public TodoItemDetailsViewModel()
+        public TodoItemDetailsViewModel(IEnumerable<FeatureFlagViewModel> featureFlags):base(featureFlags)
         {
         }
 

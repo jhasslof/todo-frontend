@@ -32,7 +32,15 @@
             <th>
                 @Html.DisplayNameForInnerType((webui.Models.TodoItemViewModel itemsModel) => itemsModel.IsComplete)
             </th>
-            <th></th>
+            @{
+                if (Model.FeatureFlagIsActive("todo-extra-info"))
+                {
+                    <th>
+                        @Html.DisplayNameForInnerType((webui.Models.TodoItemViewModel itemsModel) => itemsModel.Note)
+                    </th>
+                }
+            }
+            <th />
         </tr>
     </thead>
     <tbody>
@@ -48,6 +56,14 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.IsComplete)
                 </td>
+                @{
+                    if (Model.FeatureFlagIsActive("todo-extra-info"))
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Note)
+                        </td>
+                    }
+                }
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                     @Html.ActionLink("Delete", "Delete", new { id = item.Id })

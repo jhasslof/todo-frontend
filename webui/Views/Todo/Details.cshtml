@@ -1,4 +1,4 @@
-﻿@model webui.Models.TodoItemViewModel
+﻿@model webui.Models.TodoItemDetailsViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -7,32 +7,43 @@
 <h1>Details</h1>
 
 <div>
-    <h4>TodoViewModel</h4>
+    <h4>TodoItemDetailsViewModel</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
+        <dt class="col-sm-2">
+            @Html.DisplayNameForInnerType((webui.Models.TodoItemViewModel itemsModel) => itemsModel.Id)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Id)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TodoItem.Id)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+        <dt class="col-sm-2">
+            @Html.DisplayNameForInnerType((webui.Models.TodoItemViewModel itemsModel) => itemsModel.Name)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TodoItem.Name)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsComplete)
+        <dt class="col-sm-2">
+            @Html.DisplayNameForInnerType((webui.Models.TodoItemViewModel itemsModel) => itemsModel.IsComplete)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsComplete)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TodoItem.IsComplete)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ErrorMessage)
+        <dt class="col-sm-2">
+            @Html.DisplayNameForInnerType((webui.Models.TodoItemViewModel itemsModel) => itemsModel.ErrorMessage)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ErrorMessage)
+        @{
+            if (Model.FeatureFlagIsActive("todo-extra-info"))
+            {
+                <dt class="col-sm-2">
+                    @Html.DisplayNameForInnerType((webui.Models.TodoItemViewModel itemsModel) => itemsModel.Note)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TodoItem.Note)
+                </dd>
+            }
+        }
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TodoItem.ErrorMessage)
         </dd>
     </dl>
 </div>

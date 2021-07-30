@@ -6,23 +6,20 @@ namespace webui.Mapper
 {
     public static class ViewModelMapperExtensions
     {
-        public static Models.TodoViewModel Map(this Models.TodoViewModel todoVm, IList<Service.Models.TodoItem> serviceItems, IEnumerable<Models.FeatureFlagViewModel> featureFlags)
+        public static Models.TodoViewModel Map(this Models.TodoViewModel todoVm, IList<Service.Models.TodoItem> serviceItems)
         {
             var vmTodoItems = new List<Models.TodoItemViewModel>();
-            foreach(var serviceItem in serviceItems)
+            foreach (var serviceItem in serviceItems)
             {
-                vmTodoItems.Add(new Models.TodoItemViewModel().Map(serviceItem));
+                var todoItem = new Models.TodoItemViewModel().Map(serviceItem);
+                if (todoVm.FeatureFlagIsActive("todo-extra-info"))
+                {
+                    todoItem.MapTodoExtraInfo(serviceItem);
+                }
+                vmTodoItems.Add(todoItem);
             }
-            todoVm.featureFlags = featureFlags;
             todoVm.todoItems = vmTodoItems;
             return todoVm;
-        }
-
-        public static Models.TodoItemDetailsViewModel Map(this Models.TodoItemDetailsViewModel todoItemDetailsVm, Service.Models.TodoItem serviceItem, IEnumerable<Models.FeatureFlagViewModel> featureFlags)
-        {
-            todoItemDetailsVm.TodoItem = new Models.TodoItemViewModel().Map(serviceItem);
-            todoItemDetailsVm.featureFlags = featureFlags;
-            return todoItemDetailsVm;
         }
 
         public static Models.TodoItemViewModel Map(this Models.TodoItemViewModel todoItemVm, Service.Models.TodoItem serviceItem)
@@ -32,18 +29,38 @@ namespace webui.Mapper
             todoItemVm.IsComplete = serviceItem.IsComplete;
             return todoItemVm;
         }
-
-        public static Models.TodoItemDetailsViewModel Map(this Models.TodoItemDetailsViewModel todoItemVm, IFormCollection collection, IEnumerable<Models.FeatureFlagViewModel> featureFlags, Exception ex = null)
+        public static Models.TodoItemViewModel MapTodoExtraInfo(this Models.TodoItemViewModel todoItemVm, Service.Models.TodoItem serviceItem)
         {
-            todoItemVm.TodoItem = new Models.TodoItemViewModel
+            todoItemVm.Note = serviceItem.Note;
+            return todoItemVm;
+        }
+
+        public static Models.TodoItemDetailsViewModel Map(this Models.TodoItemDetailsViewModel todoItemDetailsVm, Service.Models.TodoItem serviceItem)
+        {
+            todoItemDetailsVm.TodoItem = new Models.TodoItemViewModel().Map(serviceItem);
+            if (todoItemDetailsVm.FeatureFlagIsActive("todo-extra-info"))
+            {
+                todoItemDetailsVm.TodoItem.MapTodoExtraInfo(serviceItem);
+            }
+            
+            return todoItemDetailsVm;
+        }
+
+        public static Models.TodoItemDetailsViewModel Map(this Models.TodoItemDetailsViewModel todoItemDetailsVm, IFormCollection collection, Exception ex = null)
+        {
+            todoItemDetailsVm.TodoItem = new Models.TodoItemViewModel
             {
                 Id = (collection.ContainsKey("TodoItem.Id") ? Convert.ToInt64(collection["TodoItem.Id"]) : 0),
                 Name = collection["TodoItem.Name"],
                 IsComplete = ConvertCheckBoxValueToBool(collection["TodoItem.IsComplete"]),
                 ErrorMessage = (ex == null ? "" : ex.Message)
             };
-            todoItemVm.featureFlags = featureFlags;
-            return todoItemVm;
+            
+            if (todoItemDetailsVm.FeatureFlagIsActive("todo-extra-info"))
+            {
+                todoItemDetailsVm.TodoItem.Note = collection["TodoItem.Note"];
+            }
+            return todoItemDetailsVm;
         }
 
         public static bool ConvertCheckBoxValueToBool(string checkboxResult)

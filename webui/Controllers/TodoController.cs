@@ -16,60 +16,40 @@ namespace webui.Controllers
         private readonly ILogger<TodoController> _logger;
         private TodoServiceAgent ServiceAgent;
         public IEnumerable<FeatureFlagViewModel> FeatureFlagsInUse;
-        private Settings Settings { get; set; }
 
         public TodoController(ILogger<TodoController> logger, ITodoServiceContext serviceContext, IConfiguration configuration)
         {
-            ServiceAgent = new TodoServiceAgent(serviceContext);
-            Settings = new Settings(configuration);
-            FeatureFlagsInUse = InitializeFeatureFlagsInUse(ServiceAgent.SupportedFeatureFlags().ToList().ConvertAll(new Converter<string, FeatureFlagViewModel>(ViewModelFeatureFlagMapper.Map)));
             _logger = logger;
+            ServiceAgent = new TodoServiceAgent(serviceContext);
+            FeatureFlagsInUse = TodoFeatureFlags.GetFeatureFlagsInUse(configuration, ServiceAgent);
         }
 
-        private IEnumerable<FeatureFlagViewModel> InitializeFeatureFlagsInUse(IEnumerable<FeatureFlagViewModel> serviceSupportedFeatureFlags)
+        // GET: TodoController/FeatureFlags
+        public ActionResult FeatureFlags()
         {
-            //We can only use feature flags implemented by the controller
-            //UiOnly == true : Feature Flag is not used by the backend service
-            //UiOnly == false : We can only activate feature flags implemented by the controller and the backend service
-            var featurFlagsInUse = new List<FeatureFlagViewModel>();
-            foreach (var featureFlag in Settings.ControllerSupportedFeatureFlags)
-            {
-                if (featureFlag.UiOnly)
-                {
-                    featurFlagsInUse.Add(new FeatureFlagViewModel { Key = featureFlag.Key, UiOnly = true });
-                }
-                else if (serviceSupportedFeatureFlags.Contains(featureFlag))
-                {
-                    featurFlagsInUse.Add(new FeatureFlagViewModel { Key = featureFlag.Key });
-                }
-            }
-            foreach (var featureFlag in featurFlagsInUse)
-            {
-                featureFlag.State = Settings.LaunchDarklyCredentials.LdClient.BoolVariation(featureFlag.Key, Settings.LaunchDarklyCredentials.LdUser, false);
-            }
-            return featurFlagsInUse;
+            return View(FeatureFlagsInUse);
         }
 
-         // GET: TodoController
+        // GET: TodoController
         public ActionResult Index()
         {
-            TodoViewModel viewModel = new TodoViewModel();
-            viewModel.Map(ServiceAgent.Todo().ToList(), FeatureFlagsInUse);
+            TodoViewModel viewModel = new TodoViewModel(FeatureFlagsInUse);
+            viewModel.Map(ServiceAgent.Todo().ToList());
             return View(viewModel);
         }
 
         // GET: TodoController/Details/5
         public ActionResult Details(int id)
         {
-            var itemDetails = new TodoItemDetailsViewModel();
-            itemDetails.Map(ServiceAgent.Get(id), FeatureFlagsInUse);
+            var itemDetails = new TodoItemDetailsViewModel(FeatureFlagsInUse);
+            itemDetails.Map(ServiceAgent.Get(id));
             return View(itemDetails);
         }
 
         // GET: TodoController/Create
         public ActionResult Create()
         {
-            return View();
+            return View(new TodoItemDetailsViewModel(FeatureFlagsInUse));
         }
 
         // POST: TodoController/Create
@@ -112,7 +92,7 @@ namespace webui.Controllers
             }
             catch (Exception ex)
             {
-                return View(new TodoItemDetailsViewModel().Map(collection, FeatureFlagsInUse, ex));
+                return View(new TodoItemDetailsViewModel(FeatureFlagsInUse).Map(collection, ex));
             }
         }
 

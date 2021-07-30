@@ -130,6 +130,12 @@ _process = new Process()
 3. Add a [Feature Flag implementation](https://azuredevopslabs.com/labs/vstsextend/launchdarkly/)  
 * https://raw.githubusercontent.com/Microsoft/azuredevopslabs/master/labs/vstsextend/launchdarkly/codesnippet/HomeController.cs  
 
+## Feature Flag Resources
+* [FeatureToggle intro](https://martinfowler.com/bliki/FeatureToggle.html)
+* [Implementing Feature Toggles](https://martinfowler.com/articles/feature-toggles.html)
+* [Launch Darkly Guides](https://docs.launchdarkly.com/guides) 
+* [KeystoneInterface](https://martinfowler.com/bliki/KeystoneInterface.html) 
+* [Feature flag hierarchy](https://docs.launchdarkly.com/guides/best-practices/flag-hierarchy)
 
 # Integrate with Jira 
 

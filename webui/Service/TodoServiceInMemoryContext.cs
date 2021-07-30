@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using webui.Service.Models;
 
 namespace webui.Service
@@ -41,6 +40,7 @@ namespace webui.Service
             {
                 item.Name = editItem.Name;
                 item.IsComplete = editItem.IsComplete;
+                item.Note = editItem.Note;
             }
             else { throw new ApplicationException($"Error saving '{editItem.Name}'. Item Id #{editItem.Id} not found."); }
         }
@@ -51,7 +51,7 @@ namespace webui.Service
             TodoItemsData.Remove(item);
         }
 
-        public void Create(Models.TodoItem newItem)
+        public void Create(TodoItem newItem)
         {
             if(newItem.Id.HasValue)
             {
