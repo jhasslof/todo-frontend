@@ -1,4 +1,4 @@
-﻿@model webui.Models.TodoViewModel
+﻿@model webui.Models.TodoItemDetailsViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -6,27 +6,37 @@
 
 <h1>Edit</h1>
 
-<h4>TodoViewModel</h4>
+<h4>TodoItemDetailsViewModel</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
+                <label asp-for="TodoItem.Id" class="control-label"></label>
+                <input asp-for="TodoItem.Id" class="form-control" readonly />
+                <span asp-validation-for="TodoItem.Id" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <label asp-for="TodoItem.Name" class="control-label"></label>
+                <input asp-for="TodoItem.Name" class="form-control" />
+                <span asp-validation-for="TodoItem.Name" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsComplete" /> @Html.DisplayNameFor(model => model.IsComplete)
+                    <input class="form-check-input" asp-for="TodoItem.IsComplete" /> @Html.DisplayNameForInnerType((webui.Models.TodoItemViewModel itemsModel) => itemsModel.IsComplete)
                 </label>
             </div>
+            @{
+                if (Model.FeatureFlagIsActive("todo-extra-info"))
+                {
+                    <div class="form-group">
+                        <label asp-for="TodoItem.Note" class="control-label"></label>
+                        <input asp-for="TodoItem.Note" class="form-control" />
+                        <span asp-validation-for="TodoItem.Note" class="text-danger"></span>
+                    </div>
+                }
+            }
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
@@ -34,16 +44,16 @@
     </div>
 </div>
 @{
-    if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    if (!string.IsNullOrEmpty(Model.TodoItem.ErrorMessage))
     {
-    <div class="row">
-        <div class="col-md-1">
-            <div class="form-group">
-                <label asp-for="ErrorMessage" class="text-danger"></label>
-                <input asp-for="ErrorMessage" class="text-danger" style="min-width:700px;overflow:auto;border-style:none" readonly="@(true)"/>
+        <div class="row">
+            <div class="col-md-1">
+                <div class="form-group">
+                    <label asp-for="TodoItem.ErrorMessage" class="text-danger"></label>
+                    <input asp-for="TodoItem.ErrorMessage" class="text-danger" style="min-width:700px;overflow:auto;border-style:none" readonly="@(true)" />
+                </div>
             </div>
         </div>
-    </div>
     }
 }
 <div>

@@ -11,5 +11,6 @@ namespace webui.Service
         void Update(TodoItem editItem);
         void Delete(int id);
         void Create(Models.TodoItem newItem);
+        public IEnumerable<string> SupportedFeatureFlags();
     }
 }

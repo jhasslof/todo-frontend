@@ -84,7 +84,7 @@ namespace webui.test
             Browser.Navigate().GoToUrl(Server.RootUri);
             OpenEditForTodoItemRow(idToEdit);
 
-            var tbName = Browser.FindElementById("Name");
+            var tbName = Browser.FindElementById("TodoItem_Name");
             Assert.Equal("Buy new phone", tbName.GetAttribute("value"));
 
             tbName.Clear();
@@ -103,7 +103,7 @@ namespace webui.test
             Browser.Navigate().GoToUrl(Server.RootUri);
             OpenCreateView();
 
-            var tbName = Browser.FindElementById("Name");
+            var tbName = Browser.FindElementById("TodoItem_Name");
             Assert.Equal("", tbName.GetAttribute("value"));
 
             tbName.SendKeys(NameToAdd);

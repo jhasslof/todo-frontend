@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using webui.Service.Models;
 
 namespace webui.Service
 {
-    public class TodoServiceContext : ITodoServiceContext
+    public class TodoServiceInMemoryContext : ITodoServiceContext
     {
         private IList<TodoItem> TodoItemsData { get; set; }
 
-        public TodoServiceContext()
+        private readonly IEnumerable<string> supportedFeatureFlags = new[] { "todo-extra-info" };  
+
+        public TodoServiceInMemoryContext()
         {
             TodoItemsData = new List<TodoItem>
             {
@@ -39,6 +40,7 @@ namespace webui.Service
             {
                 item.Name = editItem.Name;
                 item.IsComplete = editItem.IsComplete;
+                item.Note = editItem.Note;
             }
             else { throw new ApplicationException($"Error saving '{editItem.Name}'. Item Id #{editItem.Id} not found."); }
         }
@@ -49,7 +51,7 @@ namespace webui.Service
             TodoItemsData.Remove(item);
         }
 
-        public void Create(Models.TodoItem newItem)
+        public void Create(TodoItem newItem)
         {
             if(newItem.Id.HasValue)
             {
@@ -62,6 +64,11 @@ namespace webui.Service
         private long NextFreeId()
         {
             return TodoItemsData.Max(i => i.Id.Value) + 1;
+        }
+
+        public IEnumerable<string> SupportedFeatureFlags()
+        {
+            return supportedFeatureFlags;
         }
     }
 }

@@ -4,7 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
 
 trigger:
-- master
+- main
 
 pool:
   vmImage: 'ubuntu-18.04'
@@ -17,9 +17,9 @@ variables:
 steps:
 - task: UseDotNet@2
   inputs:
-    version: '3.1.x'
-    packageType: runtime
-
+    packageType: sdk
+    useGlobalJson: true
+    
 - task: DotNetCoreCLI@2
   displayName: 'Restore website dependencies'
   inputs:
@@ -48,6 +48,7 @@ steps:
 
 - task: DotNetCoreCLI@2
   displayName: 'Run integration tests'
+  enabled: false
   inputs:
     command: 'test'
     projects: '**/webui.IntegrationTest.csproj'
@@ -55,7 +56,7 @@ steps:
     publishTestResults: true
 
 - task: DotNetCoreCLI@2
-  displayName: 'Publish webiste artifact'
+  displayName: 'Build webiste zip-artifact'
   inputs:
     command: 'publish'
     projects: '**/webui.csproj'
@@ -64,6 +65,7 @@ steps:
     zipAfterPublish: true
     
 - task: PublishBuildArtifacts@1
+  displayName: 'Publish build atrifacts in pipeline'
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)/web'
     ArtifactName: 'todo-web'

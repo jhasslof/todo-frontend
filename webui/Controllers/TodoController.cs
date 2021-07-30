@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using webui.Mapper;
 using webui.Service;
+using webui.Models;
+using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 
 namespace webui.Controllers
 {
@@ -14,31 +15,41 @@ namespace webui.Controllers
     {
         private readonly ILogger<TodoController> _logger;
         private TodoServiceAgent ServiceAgent;
+        public IEnumerable<FeatureFlagViewModel> FeatureFlagsInUse;
 
-        public TodoController(ILogger<TodoController> logger, ITodoServiceContext serviceContext)
+        public TodoController(ILogger<TodoController> logger, ITodoServiceContext serviceContext, IConfiguration configuration)
         {
-            ServiceAgent = new TodoServiceAgent(serviceContext);
             _logger = logger;
+            ServiceAgent = new TodoServiceAgent(serviceContext);
+            FeatureFlagsInUse = TodoFeatureFlags.GetFeatureFlagsInUse(configuration, ServiceAgent);
+        }
+
+        // GET: TodoController/FeatureFlags
+        public ActionResult FeatureFlags()
+        {
+            return View(FeatureFlagsInUse);
         }
 
         // GET: TodoController
         public ActionResult Index()
         {
-            var todoItems = ServiceAgent.Todo().ToList().ConvertAll(new Converter<Service.Models.TodoItem, Models.TodoViewModel>(TodoModelViewMapper.Map));
-            return View(todoItems);
+            TodoViewModel viewModel = new TodoViewModel(FeatureFlagsInUse);
+            viewModel.Map(ServiceAgent.Todo().ToList());
+            return View(viewModel);
         }
 
         // GET: TodoController/Details/5
         public ActionResult Details(int id)
         {
-            var todoItem = TodoModelViewMapper.Map(ServiceAgent.Get(id));
-            return View(todoItem);
+            var itemDetails = new TodoItemDetailsViewModel(FeatureFlagsInUse);
+            itemDetails.Map(ServiceAgent.Get(id));
+            return View(itemDetails);
         }
 
         // GET: TodoController/Create
         public ActionResult Create()
         {
-            return View();
+            return View(new TodoItemDetailsViewModel(FeatureFlagsInUse));
         }
 
         // POST: TodoController/Create
@@ -48,7 +59,7 @@ namespace webui.Controllers
         {
             try
             {
-                ServiceAgent.Create(TodoItemMapper.Map(collection));
+                ServiceAgent.Create(new Service.Models.TodoItem().Map(collection, FeatureFlagsInUse));
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -60,8 +71,7 @@ namespace webui.Controllers
         // GET: TodoController/Edit/5
         public ActionResult Edit(int id)
         {
-            var originalItem = TodoModelViewMapper.Map(ServiceAgent.Get(id));
-            return View(originalItem);
+            return Details(id);
         }
 
         // POST: TodoController/Edit/5
@@ -76,13 +86,13 @@ namespace webui.Controllers
                     return View();
                 }
 
-                Service.Models.TodoItem editItem = TodoItemMapper.Map(collection);
+                Service.Models.TodoItem editItem = new Service.Models.TodoItem().Map(collection, FeatureFlagsInUse);
                 ServiceAgent.Update(editItem);
                 return RedirectToAction(nameof(Index));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                return View(TodoModelViewMapper.Map(collection, ex));
+                return View(new TodoItemDetailsViewModel(FeatureFlagsInUse).Map(collection, ex));
             }
         }
 
