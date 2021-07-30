@@ -15,22 +15,22 @@ namespace webui.Service
             Context = context;
         }
 
-        public IEnumerable<Models.TodoItem> Todo()
+        public IEnumerable<Models.TodoItemDTO> Todo()
         {
             return Context.TodoItems();
         }
 
-        public Models.TodoItem Get(int id)
+        public Models.TodoItemDTO Get(int id)
         {
             return Context.Get(id);
         }
 
-        internal void Update(TodoItem editItem)
+        internal void Update(TodoItemDTO editItem)
         {
             Context.Update(editItem);
         }
 
-        internal void Create(Models.TodoItem newItem)
+        internal void Create(Models.TodoItemDTO newItem)
         {
             Context.Create(newItem);
         }

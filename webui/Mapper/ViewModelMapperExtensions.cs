@@ -6,7 +6,7 @@ namespace webui.Mapper
 {
     public static class ViewModelMapperExtensions
     {
-        public static Models.TodoViewModel Map(this Models.TodoViewModel todoVm, IList<Service.Models.TodoItem> serviceItems)
+        public static Models.TodoViewModel Map(this Models.TodoViewModel todoVm, IList<Service.Models.TodoItemDTO> serviceItems)
         {
             var vmTodoItems = new List<Models.TodoItemViewModel>();
             foreach (var serviceItem in serviceItems)
@@ -22,20 +22,20 @@ namespace webui.Mapper
             return todoVm;
         }
 
-        public static Models.TodoItemViewModel Map(this Models.TodoItemViewModel todoItemVm, Service.Models.TodoItem serviceItem)
+        public static Models.TodoItemViewModel Map(this Models.TodoItemViewModel todoItemVm, Service.Models.TodoItemDTO serviceItem)
         {
             todoItemVm.Id = serviceItem.Id.Value;
             todoItemVm.Name = serviceItem.Name;
             todoItemVm.IsComplete = serviceItem.IsComplete;
             return todoItemVm;
         }
-        public static Models.TodoItemViewModel MapTodoExtraInfo(this Models.TodoItemViewModel todoItemVm, Service.Models.TodoItem serviceItem)
+        public static Models.TodoItemViewModel MapTodoExtraInfo(this Models.TodoItemViewModel todoItemVm, Service.Models.TodoItemDTO serviceItem)
         {
             todoItemVm.Note = serviceItem.Note;
             return todoItemVm;
         }
 
-        public static Models.TodoItemDetailsViewModel Map(this Models.TodoItemDetailsViewModel todoItemDetailsVm, Service.Models.TodoItem serviceItem)
+        public static Models.TodoItemDetailsViewModel Map(this Models.TodoItemDetailsViewModel todoItemDetailsVm, Service.Models.TodoItemDTO serviceItem)
         {
             todoItemDetailsVm.TodoItem = new Models.TodoItemViewModel().Map(serviceItem);
             if (todoItemDetailsVm.FeatureFlagIsActive("todo-extra-info"))

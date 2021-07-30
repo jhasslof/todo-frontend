@@ -7,33 +7,33 @@ namespace webui.Service
 {
     public class TodoServiceInMemoryContext : ITodoServiceContext
     {
-        private IList<TodoItem> TodoItemsData { get; set; }
+        private IList<TodoItemDTO> TodoItemsData { get; set; }
 
         private readonly IEnumerable<string> supportedFeatureFlags = new[] { "todo-extra-info" };  
 
         public TodoServiceInMemoryContext()
         {
-            TodoItemsData = new List<TodoItem>
+            TodoItemsData = new List<TodoItemDTO>
             {
-                new TodoItem{Id = 1, Name = "Buy new phone", IsComplete = false},
-                new TodoItem{Id = 2, Name = "Go running", IsComplete = false},
-                new TodoItem{Id = 3, Name = "Code new demo", IsComplete = false},
-                new TodoItem{Id = 4, Name = "Make dinner", IsComplete = false},
+                new TodoItemDTO{Id = 1, Name = "Buy new phone", IsComplete = false},
+                new TodoItemDTO{Id = 2, Name = "Go running", IsComplete = false},
+                new TodoItemDTO{Id = 3, Name = "Code new demo", IsComplete = false},
+                new TodoItemDTO{Id = 4, Name = "Make dinner", IsComplete = false},
             };
         }
 
-        public IEnumerable<TodoItem> TodoItems()
+        public IEnumerable<TodoItemDTO> TodoItems()
         {
             // Simulate calling api service to get todo data
             return TodoItemsData;
         }
 
-        public TodoItem Get(int id)
+        public TodoItemDTO Get(int id)
         {
             return TodoItemsData.FirstOrDefault(i => i.Id == id);
         }
 
-        public void Update(TodoItem editItem)
+        public void Update(TodoItemDTO editItem)
         {
             var item = TodoItemsData.SingleOrDefault(i => i.Id == editItem.Id);
             if(item != null)
@@ -51,7 +51,7 @@ namespace webui.Service
             TodoItemsData.Remove(item);
         }
 
-        public void Create(TodoItem newItem)
+        public void Create(TodoItemDTO newItem)
         {
             if(newItem.Id.HasValue)
             {

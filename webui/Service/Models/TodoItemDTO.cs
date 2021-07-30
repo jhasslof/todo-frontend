@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace webui.Service.Models
 {
-    public class TodoItem
+    public class TodoItemDTO
     {
-        public TodoItem()
+        public TodoItemDTO()
         {
         }
 

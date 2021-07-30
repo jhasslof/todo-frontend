@@ -8,33 +8,33 @@ namespace webui.IntegrationTest.TestServices
 {
     public class TodoServiceTestContext : Service.ITodoServiceContext
     {
-        private IList<TodoItem> TodoItemsData { get; set; }
+        private IList<TodoItemDTO> TodoItemsData { get; set; }
         private IList<string> SupportedFeatureFlagsData { get; set; }
 
         public TodoServiceTestContext(string[] todos, string[] supportedFeatureFlags)
         {
-            TodoItemsData = new List<TodoItem>();
+            TodoItemsData = new List<TodoItemDTO>();
             for (int i = 0; i < todos.Length; i++)
             {
                 string todo = todos[i];
-                TodoItemsData.Add(new TodoItem { Id = i + 1, Name = todo, IsComplete = false });
+                TodoItemsData.Add(new TodoItemDTO { Id = i + 1, Name = todo, IsComplete = false });
             }
 
             SupportedFeatureFlagsData = new List<string>(supportedFeatureFlags);
         }
 
-        public IEnumerable<TodoItem> TodoItems()
+        public IEnumerable<TodoItemDTO> TodoItems()
         {
             // Simulate calling api service to get todo data
             return TodoItemsData;
         }
 
-        public TodoItem Get(int id)
+        public TodoItemDTO Get(int id)
         {
             return TodoItemsData.FirstOrDefault(i => i.Id == id);
         }
 
-        public void Update(TodoItem editItem)
+        public void Update(TodoItemDTO editItem)
         {
             throw new NotImplementedException();
         }
@@ -44,7 +44,7 @@ namespace webui.IntegrationTest.TestServices
             throw new NotImplementedException();
         }
 
-        public void Create(TodoItem newItem)
+        public void Create(TodoItemDTO newItem)
         {
             throw new NotImplementedException();
         }

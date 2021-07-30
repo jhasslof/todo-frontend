@@ -59,7 +59,7 @@ namespace webui.Controllers
         {
             try
             {
-                ServiceAgent.Create(new Service.Models.TodoItem().Map(collection, FeatureFlagsInUse));
+                ServiceAgent.Create(new Service.Models.TodoItemDTO().Map(collection, FeatureFlagsInUse));
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -86,7 +86,7 @@ namespace webui.Controllers
                     return View();
                 }
 
-                Service.Models.TodoItem editItem = new Service.Models.TodoItem().Map(collection, FeatureFlagsInUse);
+                Service.Models.TodoItemDTO editItem = new Service.Models.TodoItemDTO().Map(collection, FeatureFlagsInUse);
                 ServiceAgent.Update(editItem);
                 return RedirectToAction(nameof(Index));
             }
