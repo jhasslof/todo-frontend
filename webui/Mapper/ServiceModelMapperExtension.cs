@@ -14,7 +14,7 @@ namespace webui.Mapper
 
         public static Service.Models.TodoItemDTO Map(this Service.Models.TodoItemDTO todoItem, webui.Models.TodoItemDetailsViewModel item)
         {
-            todoItem.Id = item.TodoItem.Id > 0 ? item.TodoItem.Id : (long?)null;
+            todoItem.Id = item.TodoItem.Id; // > 0 ? item.TodoItem.Id : (long?)null;
             todoItem.Name = item.TodoItem.Name;
             todoItem.IsComplete = item.TodoItem.IsComplete;
             if (item.FeatureFlagIsActive("todo-extra-info"))

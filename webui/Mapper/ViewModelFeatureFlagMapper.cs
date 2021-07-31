@@ -2,11 +2,11 @@
 {
     public class ViewModelFeatureFlagMapper
     {
-        public static Models.FeatureFlagViewModel Map(string featureFlagKey)
+        public static Models.FeatureFlagViewModel Map(Service.Models.FeatureFlagDTO featureFlagKey)
         {
             return new Models.FeatureFlagViewModel
             {
-                Key = featureFlagKey,
+                Key = featureFlagKey.Key,
             };
         }
     }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,9 +12,9 @@ using webui.Service;
 
 namespace webui
 {
-    public class Startup
+    public class TestHostStartup
     {
-        public Startup(IConfiguration configuration)
+        public TestHostStartup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
@@ -24,7 +24,7 @@ namespace webui
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<ITodoServiceAsyncContext, TodoServiceRestContext>();
+            services.AddSingleton<ITodoServiceAsyncContext, TodoServiceInMemoryAsyncContext>();
             services.AddControllersWithViews();
         }
 
@@ -60,4 +60,6 @@ namespace webui
             });
         }
     }
+
 }
+

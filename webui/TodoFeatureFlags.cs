@@ -18,14 +18,16 @@ namespace webui
             new FeatureFlagViewModel { Key = "new-welcome-message", UiOnly = true },
         };
 
-        public static IEnumerable<FeatureFlagViewModel> GetFeatureFlagsInUse(IConfiguration configuration, TodoServiceAgent serviceAgent)
+        public static IEnumerable<FeatureFlagViewModel> GetFeatureFlagsInUse(IConfiguration configuration, TodoServiceAsyncAgent serviceAgent)
         {
             configuration.GetSection("LaunchDarklyCredentials").Bind(LaunchDarklyCredentials);
 
             //We can only use feature flags implemented by the controller
             //UiOnly == true : Feature Flag is not used by the backend service
             //UiOnly == false : We can only activate feature flags implemented by the controller and the backend service'
-            IEnumerable<FeatureFlagViewModel> serviceSupportedFeatureFlags = serviceAgent.SupportedFeatureFlags().ToList().ConvertAll(new Converter<string, FeatureFlagViewModel>(ViewModelFeatureFlagMapper.Map));
+            var task = Task.Run(() => serviceAgent.SupportedFeatureFlags());
+            var flags = (IEnumerable<Service.Models.FeatureFlagDTO>)task.GetType().GetProperty("Result").GetValue(task);
+            IEnumerable<FeatureFlagViewModel> serviceSupportedFeatureFlags = flags.ToList().ConvertAll(new Converter<Service.Models.FeatureFlagDTO, FeatureFlagViewModel>(ViewModelFeatureFlagMapper.Map));
             var featurFlagsInUse = new List<FeatureFlagViewModel>();
             foreach (var featureFlag in ControllerSupportedFeatureFlags)
             {
@@ -40,7 +42,10 @@ namespace webui
             }
             foreach (var featureFlag in featurFlagsInUse)
             {
-                featureFlag.State = LaunchDarklyCredentials.LdClient.BoolVariation(featureFlag.Key, LaunchDarklyCredentials.LdUser, false);
+                if (LaunchDarklyCredentials.LdClient != null)
+                {
+                    featureFlag.State = LaunchDarklyCredentials.LdClient.BoolVariation(featureFlag.Key, LaunchDarklyCredentials.LdUser, false);
+                }
             }
             return featurFlagsInUse;
         }

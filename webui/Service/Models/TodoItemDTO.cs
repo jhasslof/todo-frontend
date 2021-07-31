@@ -7,13 +7,14 @@ namespace webui.Service.Models
 {
     public class TodoItemDTO
     {
-        public TodoItemDTO()
-        {
-        }
+        public long Id { get; set; } = 0;
+        public string Name { get; set; } = "";
+        public bool IsComplete { get; set; } = false;
+        public string Note { get; set; } = "";
+    }
 
-        public long? Id { get; set; }
-        public string Name { get; set; }
-        public bool IsComplete { get; set; }
-        public string Note { get; set; }
+    public class FeatureFlagDTO
+    {
+        public string Key { get; set; } = "";
     }
 }

@@ -24,7 +24,7 @@ namespace webui.Mapper
 
         public static Models.TodoItemViewModel Map(this Models.TodoItemViewModel todoItemVm, Service.Models.TodoItemDTO serviceItem)
         {
-            todoItemVm.Id = serviceItem.Id.Value;
+            todoItemVm.Id = serviceItem.Id;
             todoItemVm.Name = serviceItem.Name;
             todoItemVm.IsComplete = serviceItem.IsComplete;
             return todoItemVm;

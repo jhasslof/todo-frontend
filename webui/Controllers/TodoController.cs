@@ -8,41 +8,41 @@ using webui.Service;
 using webui.Models;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
+using System.Threading.Tasks;
 
 namespace webui.Controllers
 {
     public class TodoController : Controller
     {
         private readonly ILogger<TodoController> _logger;
-        private TodoServiceAgent ServiceAgent;
+        private TodoServiceAsyncAgent ServiceAgent;
         public IEnumerable<FeatureFlagViewModel> FeatureFlagsInUse;
+        IConfiguration Configuration;
 
-        public TodoController(ILogger<TodoController> logger, ITodoServiceContext serviceContext, IConfiguration configuration)
+        public TodoController(ILogger<TodoController> logger, ITodoServiceAsyncContext serviceContext, IConfiguration configuration)
         {
+            Configuration = configuration;
             _logger = logger;
-            ServiceAgent = new TodoServiceAgent(serviceContext);
+            ServiceAgent = new TodoServiceAsyncAgent(serviceContext);
             FeatureFlagsInUse = TodoFeatureFlags.GetFeatureFlagsInUse(configuration, ServiceAgent);
         }
 
-        // GET: TodoController/FeatureFlags
-        public ActionResult FeatureFlags()
-        {
-            return View(FeatureFlagsInUse);
-        }
 
         // GET: TodoController
-        public ActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            TodoViewModel viewModel = new TodoViewModel(FeatureFlagsInUse);
-            viewModel.Map(ServiceAgent.Todo().ToList());
+            IEnumerable<Service.Models.TodoItemDTO> todoItems = await ServiceAgent.Todo();
+
+            TodoViewModel viewModel = new TodoViewModel(FeatureFlagsInUse); 
+            viewModel.Map(todoItems.ToList());
             return View(viewModel);
         }
 
         // GET: TodoController/Details/5
-        public ActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
             var itemDetails = new TodoItemDetailsViewModel(FeatureFlagsInUse);
-            itemDetails.Map(ServiceAgent.Get(id));
+            itemDetails.Map(await ServiceAgent.Get(id));
             return View(itemDetails);
         }
 
@@ -55,11 +55,11 @@ namespace webui.Controllers
         // POST: TodoController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> CreateAsync(IFormCollection collection)
         {
             try
             {
-                ServiceAgent.Create(new Service.Models.TodoItemDTO().Map(collection, FeatureFlagsInUse));
+                await ServiceAgent.CreateAsync(new Service.Models.TodoItemDTO().Map(collection, FeatureFlagsInUse));
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -69,15 +69,15 @@ namespace webui.Controllers
         }
 
         // GET: TodoController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            return Details(id);
+            return await Details(id);
         }
 
         // POST: TodoController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> EditAsync(int id, IFormCollection collection)
         {
             try
             {
@@ -87,7 +87,7 @@ namespace webui.Controllers
                 }
 
                 Service.Models.TodoItemDTO editItem = new Service.Models.TodoItemDTO().Map(collection, FeatureFlagsInUse);
-                ServiceAgent.Update(editItem);
+                await ServiceAgent.Update(editItem);
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
@@ -97,26 +97,26 @@ namespace webui.Controllers
         }
 
         // GET: TodoController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            ServiceAgent.Delete(id);
+            await ServiceAgent.Delete(id);
             return RedirectToAction("Index");
         }
 
         // POST: TodoController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Delete(int id, IFormCollection collection)
+        //{
+        //    try
+        //    {
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
 
         public IActionResult Privacy()
         {

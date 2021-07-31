@@ -38,24 +38,16 @@ namespace webui.Models
 
     public class TodoItemViewModel
     {
-        public TodoItemViewModel()
-        {
-        }
-
-        public long Id { get; set; }
-        public string Name { get; set; }
-        public bool IsComplete { get; set; }
-        public string ErrorMessage { get; set; }
-        public string Note { get; set; }
+        public long Id { get; set; } = 0;
+        public string Name { get; set; } = "";
+        public bool IsComplete { get; set; } = false;
+        public string ErrorMessage { get; set; } = "";
+        public string Note { get; set; } = "";
     }
 
     public class FeatureFlagViewModel
     {
-        public FeatureFlagViewModel()
-        {
-        }
-
-        public string Key { get; set; }
+        public string Key { get; set; } = "";
         public bool State { get; set; } = false;
         public bool UiOnly { get; set; } = false;
 
