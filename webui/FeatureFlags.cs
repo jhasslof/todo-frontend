@@ -9,18 +9,33 @@ using webui.Service;
 
 namespace webui
 {
-    public class TodoFeatureFlags
+    public class FeatureFlags
     {
-        private static LaunchDarklyCredentials LaunchDarklyCredentials { get; set; } = new LaunchDarklyCredentials();
-
+        private static LaunchDarklyCredentials LaunchDarklyCredentials { get; set; }
         private readonly static IEnumerable<FeatureFlagViewModel> ControllerSupportedFeatureFlags = new[] {
             new FeatureFlagViewModel { Key = "todo-extra-info" },
             new FeatureFlagViewModel { Key = "new-welcome-message", UiOnly = true },
         };
+        private static object bindConfigLoc = new object();
 
         public static IEnumerable<FeatureFlagViewModel> GetFeatureFlagsInUse(IConfiguration configuration, TodoServiceAsyncAgent serviceAgent)
         {
-            configuration.GetSection("LaunchDarklyCredentials").Bind(LaunchDarklyCredentials);
+            lock (bindConfigLoc)
+            {
+                if (null == LaunchDarklyCredentials)
+                {
+                    var flagDefaultValuesConfig = configuration.GetSection("FeatureFlags:Defaults").GetChildren().ToList();
+                    foreach (var flagDefaultValueConfig in flagDefaultValuesConfig)
+                    {
+                        var flagDefault = new FeatureFlagDefault();
+                        flagDefaultValueConfig.Bind(flagDefault);
+                        var featureFlag = ControllerSupportedFeatureFlags.Single(f => f.Key == flagDefault.Key);
+                        featureFlag.State = flagDefault.State;
+                    }
+                    LaunchDarklyCredentials = new LaunchDarklyCredentials();
+                    configuration.GetSection("FeatureFlags:LaunchDarklyCredentials").Bind(LaunchDarklyCredentials);
+                }
+            }
 
             //We can only use feature flags implemented by the controller
             //UiOnly == true : Feature Flag is not used by the backend service
@@ -33,11 +48,11 @@ namespace webui
             {
                 if (featureFlag.UiOnly)
                 {
-                    featurFlagsInUse.Add(new FeatureFlagViewModel { Key = featureFlag.Key, UiOnly = true });
+                    featurFlagsInUse.Add(new FeatureFlagViewModel { Key = featureFlag.Key, UiOnly = true, State = featureFlag.State });
                 }
                 else if (serviceSupportedFeatureFlags.Contains(featureFlag))
                 {
-                    featurFlagsInUse.Add(new FeatureFlagViewModel { Key = featureFlag.Key });
+                    featurFlagsInUse.Add(new FeatureFlagViewModel { Key = featureFlag.Key, State = featureFlag.State });
                 }
             }
             foreach (var featureFlag in featurFlagsInUse)
@@ -48,10 +63,15 @@ namespace webui
                 }
             }
             return featurFlagsInUse;
+
         }
     }
 
-
+    public class FeatureFlagDefault
+    {
+        public string Key { get; set; }
+        public bool State { get; set; }
+    }
     public class LaunchDarklyCredentials
     {
         private string user;
@@ -62,7 +82,7 @@ namespace webui
             get => user;
             set
             {
-                if (string.IsNullOrEmpty(user))
+                if (!string.IsNullOrEmpty(value) && string.IsNullOrEmpty(user))
                 {
                     user = value;
                     LdUser = LaunchDarkly.Sdk.User.WithKey(value);
@@ -70,17 +90,18 @@ namespace webui
             }
 
         }
-        public string SdkKey { 
+        public string SdkKey
+        {
             get => sdkKey;
             set
             {
-                if (string.IsNullOrEmpty(sdkKey))
+                if (!string.IsNullOrEmpty(value) && string.IsNullOrEmpty(sdkKey))
                 {
                     sdkKey = value;
                     LdClient = new LaunchDarkly.Sdk.Server.LdClient(value);
                 }
 
-            } 
+            }
         }
 
         //LdClient should be a singleton

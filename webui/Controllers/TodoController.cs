@@ -24,7 +24,7 @@ namespace webui.Controllers
             Configuration = configuration;
             _logger = logger;
             ServiceAgent = new TodoServiceAsyncAgent(serviceContext);
-            FeatureFlagsInUse = TodoFeatureFlags.GetFeatureFlagsInUse(configuration, ServiceAgent);
+            FeatureFlagsInUse = FeatureFlags.GetFeatureFlagsInUse(configuration, ServiceAgent);
         }
 
 
