@@ -16,5 +16,6 @@ namespace webui.Service.Models
     public class FeatureFlagDTO
     {
         public string Key { get; set; } = "";
+        public bool State { get; set; }
     }
 }

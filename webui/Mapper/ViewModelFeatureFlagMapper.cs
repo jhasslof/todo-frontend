@@ -7,6 +7,7 @@
             return new Models.FeatureFlagViewModel
             {
                 Key = featureFlagKey.Key,
+                State = featureFlagKey.State
             };
         }
     }
