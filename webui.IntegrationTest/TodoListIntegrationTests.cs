@@ -29,7 +29,7 @@ namespace webui.IntegrationTest
         public async Task Get_Endpoints_ReturnSuccessAndCorrectContentType(string url)
         {
             // Arrange
-            var client = _factory.CreateClient();
+            var client = CreateServiceClientWithDefaultTestContent();
 
             // Act
             var response = await client.GetAsync(url);
@@ -43,29 +43,8 @@ namespace webui.IntegrationTest
         [Fact]
         public async Task Get_Todolist_ReturnsListOfTodoItemsSuccessfully()
         {
-            string[] a = { "a", "b" };
-
             // Arrange
-            var client = _factory.WithWebHostBuilder(builder =>
-                {
-                    builder.ConfigureTestServices(services =>
-                        {
-                            services.AddScoped<ITodoServiceAsyncContext>(s => new TodoServiceAsyncTestContext(
-                                    new[] {
-                                        "Mjölk",
-                                        "Smör",
-                                        "Bröd",
-                                        "Ägg",
-                                        "Ost"
-                                    },
-                                    new[] {
-                                        "dummyFF"
-                                    }
-                                )
-                            );
-                        }
-                    );
-                }).CreateClient();
+            System.Net.Http.HttpClient client = CreateServiceClientWithDefaultTestContent();
             int numberOfRows = 5;
             int numberOfColumns = 4;
 
@@ -95,6 +74,30 @@ namespace webui.IntegrationTest
         public void Enum_To_String()
         {
             Assert.Equal("notes", ffs.notes.ToString("g"));
+        }
+
+        private System.Net.Http.HttpClient CreateServiceClientWithDefaultTestContent()
+        {
+            return _factory.WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureTestServices(services =>
+                {
+                    services.AddScoped<ITodoServiceAsyncContext>(s => new TodoServiceAsyncTestContext(
+                            new[] {
+                                        "Mjölk",
+                                        "Smör",
+                                        "Bröd",
+                                        "Ägg",
+                                        "Ost"
+                            },
+                            new[] {
+                                        "dummyFF"
+                            }
+                        )
+                    );
+                }
+                );
+            }).CreateClient();
         }
     }
 }
