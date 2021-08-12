@@ -7,7 +7,9 @@ trigger:
 - main
 
 pool:
-  vmImage: 'ubuntu-18.04'
+  name: Default
+  demands: 
+    - agent.name -equals OCRA 
 
 variables:
   solution: '**/*.sln'
