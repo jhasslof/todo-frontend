@@ -29,7 +29,7 @@ namespace webui.IntegrationTest
         public async Task Get_Endpoints_ReturnSuccessAndCorrectContentType(string url)
         {
             // Arrange
-            var client = _factory.CreateClient();
+            var client = CreateServiceClientWithDefaultTestContent();
 
             // Act
             var response = await client.GetAsync(url);
@@ -43,29 +43,8 @@ namespace webui.IntegrationTest
         [Fact]
         public async Task Get_Todolist_ReturnsListOfTodoItemsSuccessfully()
         {
-            string[] a = { "a", "b" };
-
             // Arrange
-            var client = _factory.WithWebHostBuilder(builder =>
-                {
-                    builder.ConfigureTestServices(services =>
-                        {
-                            services.AddScoped<ITodoServiceContext>(s => new TodoServiceTestContext(
-                                    new[] {
-                                        "Mjölk",
-                                        "Smör",
-                                        "Bröd",
-                                        "Ägg",
-                                        "Ost"
-                                    },
-                                    new[] {
-                                        "dummyFF"
-                                    }
-                                )
-                            );
-                        }
-                    );
-                }).CreateClient();
+            System.Net.Http.HttpClient client = CreateServiceClientWithDefaultTestContent();
             int numberOfRows = 5;
             int numberOfColumns = 4;
 
@@ -96,52 +75,29 @@ namespace webui.IntegrationTest
         {
             Assert.Equal("notes", ffs.notes.ToString("g"));
         }
-    //[Fact]
-    //public async Task Get_FeatureFlags_ReturnsListOfFeatureFlagsSuccessfully()
-    //{
-    //    string[] a = { "a", "b" };
 
-    //    // Arrange
-    //    var client = _factory.WithWebHostBuilder(builder =>
-    //    {
-    //        builder.ConfigureTestServices(services =>
-    //        {
-    //            services.AddScoped<ITodoServiceContext>(s => new TodoServiceTestContext(
-    //                    new[] {
-    //                        "Mjölk",
-    //                        "Smör",
-    //                        "Bröd",
-    //                        "Ägg",
-    //                        "Ost"
-    //                    },
-    //                    new[] {
-    //                        "dummyFF"
-    //                    }
-    //                )
-    //            );
-    //        }
-    //        );
-    //    }).CreateClient();
-    //    int numberOfRows = 5;
-    //    int numberOfColumns = 4;
-    //    int numberOfFeatureFlags = 1;
-
-    //    // Act
-    //    var defaultPage = await client.GetAsync("/");
-    //    var content = await HtmlHelpers.GetDocumentAsync(defaultPage);
-
-    //    //Assert
-    //    var tableElement = content.QuerySelector("table > tbody");
-    //    Assert.Equal(numberOfRows, tableElement.Children.Length);
-    //    foreach (var row in tableElement.Children)
-    //    {
-    //        Assert.Equal(numberOfColumns, row.Children.Length);
-
-    //        var todoName = row.Children[1].TextContent;
-    //        Assert.IsType<string>(todoName);
-    //        Assert.False(string.IsNullOrEmpty(todoName));
-    //        Debug.WriteLine($"Todo: {todoName.Trim()}");
-    //    }
-    //}
-}
+        private System.Net.Http.HttpClient CreateServiceClientWithDefaultTestContent()
+        {
+            return _factory.WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureTestServices(services =>
+                {
+                    services.AddScoped<ITodoServiceAsyncContext>(s => new TodoServiceAsyncTestContext(
+                            new[] {
+                                        "Mjölk",
+                                        "Smör",
+                                        "Bröd",
+                                        "Ägg",
+                                        "Ost"
+                            },
+                            new[] {
+                                        "dummyFF"
+                            }
+                        )
+                    );
+                }
+                );
+            }).CreateClient();
+        }
+    }
 }
