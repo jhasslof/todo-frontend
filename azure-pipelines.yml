@@ -18,6 +18,7 @@ variables:
 
 steps:
 - task: UseDotNet@2
+  enabled: false
   inputs:
     packageType: sdk
     useGlobalJson: true
@@ -53,6 +54,12 @@ steps:
     command: 'build'
     arguments: '--configuration $(buildConfiguration)'
     projects: '**/webui.IntegrationTest.csproj'
+
+- task: PowerShell@2
+  displayName: 'Trust dotnet core developer cert for executing user'
+  inputs:
+    targetType: 'inline'
+    script: 'dotnet dev-certs https --trust --quiet'
 
 - task: DotNetCoreCLI@2
   displayName: 'Build webui tests - $(buildConfiguration)'
