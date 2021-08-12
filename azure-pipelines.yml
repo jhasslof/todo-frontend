@@ -51,7 +51,7 @@ steps:
   displayName: 'Build integration tests - $(buildConfiguration)'
   inputs:
     command: 'build'
-    arguments: '--no-restore --configuration $(buildConfiguration)'
+    arguments: '--configuration $(buildConfiguration)'
     projects: '**/webui.IntegrationTest.csproj'
 
 - task: DotNetCoreCLI@2

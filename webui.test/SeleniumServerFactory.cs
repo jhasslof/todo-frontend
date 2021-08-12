@@ -70,6 +70,8 @@ namespace webui.test
             {
                 _host.Dispose();
                 _process.CloseMainWindow(); //Be sure to stop Selenium Standalone
+                _process.Close();
+                _process.Dispose();
             }
         }
     }

@@ -64,6 +64,7 @@ namespace webui.test
         public void Dispose()
         {
             Browser.Quit();
+            Browser.Dispose();
         }
     }
 }
