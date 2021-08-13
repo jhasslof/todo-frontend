@@ -7,9 +7,7 @@ trigger:
 - main
 
 pool:
-  name: Default
-  demands: 
-    - agent.name -equals OCRA 
+  vmImage: 'windows-latest' 
 
 variables:
   solution: '**/*.sln'
