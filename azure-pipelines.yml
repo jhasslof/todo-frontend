@@ -7,7 +7,9 @@ trigger:
 - main
 
 pool:
-  vmImage: 'ubuntu-18.04'
+  name: Default
+  demands: 
+    - agent.name -equals OCRA 
 
 variables:
   solution: '**/*.sln'
@@ -16,6 +18,7 @@ variables:
 
 steps:
 - task: UseDotNet@2
+  enabled: false
   inputs:
     packageType: sdk
     useGlobalJson: true
@@ -33,6 +36,12 @@ steps:
     projects: '**/webui.IntegrationTest.csproj'
 
 - task: DotNetCoreCLI@2
+  displayName: 'Restore webui test dependencies'
+  inputs:
+    command: 'restore'
+    projects: '**/webui.test.csproj'
+
+- task: DotNetCoreCLI@2
   displayName: 'Build website - $(buildConfiguration)'
   inputs:
     command: 'build'
@@ -43,15 +52,31 @@ steps:
   displayName: 'Build integration tests - $(buildConfiguration)'
   inputs:
     command: 'build'
-    arguments: '--no-restore --configuration $(buildConfiguration)'
+    arguments: '--configuration $(buildConfiguration)'
     projects: '**/webui.IntegrationTest.csproj'
 
 - task: DotNetCoreCLI@2
+  displayName: 'Build webui tests - $(buildConfiguration)'
+  inputs:
+    command: 'build'
+    arguments: '--no-restore --configuration $(buildConfiguration)'
+    projects: '**/webui.test.csproj'
+
+- task: DotNetCoreCLI@2
   displayName: 'Run integration tests'
-  enabled: false
+  enabled: true
   inputs:
     command: 'test'
     projects: '**/webui.IntegrationTest.csproj'
+    arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+    publishTestResults: true
+
+- task: DotNetCoreCLI@2
+  displayName: 'Run webui tests'
+  enabled: false
+  inputs:
+    command: 'test'
+    projects: '**/webui.test.csproj'
     arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
     publishTestResults: true
 

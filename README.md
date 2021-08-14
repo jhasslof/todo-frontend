@@ -1,5 +1,5 @@
 # ASP.NET Core MVC demo application with Selenium UI tests
-![Build Status](https://ketchdigital.visualstudio.com/todo-AppService/_apis/build/status/jhasslof.todo-frontend?branchName=main)
+[![Build Status](https://ketchdigital.visualstudio.com/todo-AppService/_apis/build/status/jhasslof.todo-frontend?branchName=main)](https://ketchdigital.visualstudio.com/todo-AppService/_build?definitionId=22)
 
 ## Acknowledgements
 Thanks to:
