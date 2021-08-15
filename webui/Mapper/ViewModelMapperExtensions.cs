@@ -18,7 +18,7 @@ namespace webui.Mapper
                 }
                 vmTodoItems.Add(todoItem);
             }
-            todoVm.todoItems = vmTodoItems;
+            todoVm.TodoItems = vmTodoItems;
             return todoVm;
         }
 

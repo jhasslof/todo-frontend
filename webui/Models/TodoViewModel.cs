@@ -10,6 +10,8 @@ namespace webui.Models
         {
         }
 
-        public IList<TodoItemViewModel> todoItems;
+        public string Environment;
+        public string Version;
+        public IList<TodoItemViewModel> TodoItems;
     }
 }

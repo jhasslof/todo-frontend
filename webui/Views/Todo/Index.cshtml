@@ -1,11 +1,10 @@
 ﻿@model webui.Models.TodoViewModel
 
 @{
-    ViewData["Title"] = "Todo";
+    ViewData["Title"] = "Todo List";
 }
 
 @{
-
     if (Model.FeatureFlagIsActive("new-welcome-message"))
     {
         <h1 class="display-4" id="ListHeadline">The cool todo list</h1>
@@ -14,6 +13,8 @@
     {
         <h1 class="display-4" id="ListHeadline">Things todo</h1>
     }
+    <h5 class="small">Environment: @(Model.Environment)</h5>
+    <h5 class="small">Version: @(Model.Version) </h5>
 }
 
 
@@ -44,7 +45,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.todoItems)
+        @foreach (var item in Model.TodoItems)
         {
             <tr>
                 <td>
