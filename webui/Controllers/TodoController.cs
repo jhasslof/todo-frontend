@@ -9,31 +9,40 @@ using webui.Models;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 
 namespace webui.Controllers
 {
     public class TodoController : Controller
     {
         private readonly ILogger<TodoController> _logger;
-        private TodoServiceAsyncAgent ServiceAgent;
-        public IEnumerable<FeatureFlagViewModel> FeatureFlagsInUse;
-        IConfiguration Configuration;
+        private TodoServiceAsyncAgent _serviceAgent;
+        IConfiguration _configuration;
+        private string _version;
+        private string _environment;
+        private IEnumerable<FeatureFlagViewModel> _featureFlagsInUse;
 
-        public TodoController(ILogger<TodoController> logger, ITodoServiceAsyncContext serviceContext, IConfiguration configuration)
+        public TodoController(ILogger<TodoController> logger, ITodoServiceAsyncContext serviceContext, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
-            Configuration = configuration;
+            _configuration = configuration;
             _logger = logger;
-            ServiceAgent = new TodoServiceAsyncAgent(serviceContext);
-            FeatureFlagsInUse = FeatureFlags.GetFeatureFlagsInUse(configuration, ServiceAgent);
+            _serviceAgent = new TodoServiceAsyncAgent(serviceContext);
+            _featureFlagsInUse = FeatureFlags.GetFeatureFlagsInUse(configuration, _serviceAgent);
+            _version = configuration["TodoControllerVersion"];
+            _environment = webHostEnvironment.EnvironmentName;
         }
 
 
         // GET: TodoController
         public async Task<IActionResult> Index()
         {
-            IEnumerable<Service.Models.TodoItemDTO> todoItems = await ServiceAgent.Todo();
+            IEnumerable<Service.Models.TodoItemDTO> todoItems = await _serviceAgent.Todo();
 
-            TodoViewModel viewModel = new TodoViewModel(FeatureFlagsInUse); 
+            TodoViewModel viewModel = new TodoViewModel(_featureFlagsInUse)
+            {
+                Environment = _environment,
+                Version = _version
+            };
             viewModel.Map(todoItems.ToList());
             return View(viewModel);
         }
@@ -41,15 +50,15 @@ namespace webui.Controllers
         // GET: TodoController/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var itemDetails = new TodoItemDetailsViewModel(FeatureFlagsInUse);
-            itemDetails.Map(await ServiceAgent.Get(id));
+            var itemDetails = new TodoItemDetailsViewModel(_featureFlagsInUse);
+            itemDetails.Map(await _serviceAgent.Get(id));
             return View(itemDetails);
         }
 
         // GET: TodoController/Create
         public ActionResult Create()
         {
-            return View(new TodoItemDetailsViewModel(FeatureFlagsInUse));
+            return View(new TodoItemDetailsViewModel(_featureFlagsInUse));
         }
 
         // POST: TodoController/Create
@@ -59,7 +68,7 @@ namespace webui.Controllers
         {
             try
             {
-                await ServiceAgent.CreateAsync(new Service.Models.TodoItemDTO().Map(collection, FeatureFlagsInUse));
+                await _serviceAgent.CreateAsync(new Service.Models.TodoItemDTO().Map(collection, _featureFlagsInUse));
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -86,20 +95,20 @@ namespace webui.Controllers
                     return View();
                 }
 
-                Service.Models.TodoItemDTO editItem = new Service.Models.TodoItemDTO().Map(collection, FeatureFlagsInUse);
-                await ServiceAgent.Update(editItem);
+                Service.Models.TodoItemDTO editItem = new Service.Models.TodoItemDTO().Map(collection, _featureFlagsInUse);
+                await _serviceAgent.Update(editItem);
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
-                return View(new TodoItemDetailsViewModel(FeatureFlagsInUse).Map(collection, ex));
+                return View(new TodoItemDetailsViewModel(_featureFlagsInUse).Map(collection, ex));
             }
         }
 
         // GET: TodoController/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            await ServiceAgent.Delete(id);
+            await _serviceAgent.Delete(id);
             return RedirectToAction("Index");
         }
 
