@@ -96,3 +96,16 @@ steps:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)/web'
     ArtifactName: 'todo-web'
     publishLocation: 'Container'
+
+- task: CopyFiles@2
+  displayName: 'Copy cicd scripts to: $(Build.ArtifactStagingDirectory)\scripts'
+  inputs:
+    SourceFolder: .\cicd
+    Contents: '*.ps1'
+    TargetFolder: $(Build.ArtifactStagingDirectory)\scripts
+
+- task: PublishPipelineArtifact@1
+  displayName: Publish Pipeline Artifact scripts
+  inputs:
+    artifactName: scripts
+    targetPath: $(Build.ArtifactStagingDirectory)/scripts
