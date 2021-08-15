@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -10,13 +11,21 @@ namespace webui.Service
 {
     public class TodoServiceRestContext : ITodoServiceAsyncContext
     {
+        private Uri _apiBaseUri;
+
+
+        public TodoServiceRestContext(IConfiguration configuration)
+        {
+            _apiBaseUri = new Uri(configuration["TodoApiUrl"]);
+        }
+
         // https://www.yogihosting.com/aspnet-core-consume-api/
         public async Task<IEnumerable<TodoItemDTO>> TodoItems()
         {
             List<TodoItemDTO> todoItems = new List<TodoItemDTO>();
             using (var httpClient = new HttpClient())
             {
-                httpClient.BaseAddress = new Uri("https://localhost:44314");
+                httpClient.BaseAddress = _apiBaseUri;
                 using (var response = await httpClient.GetAsync("/api/TodoItems/"))
                 {
                     response.EnsureSuccessStatusCode();
@@ -31,7 +40,7 @@ namespace webui.Service
         {
             using (var httpClient = new HttpClient())
             {
-                httpClient.BaseAddress = new Uri("https://localhost:44314");
+                httpClient.BaseAddress = _apiBaseUri;
                 var response = await httpClient.PostAsync("/api/TodoItems/", 
                                                             new StringContent(JsonConvert.SerializeObject(newItem), 
                                                                                 Encoding.UTF8, 
@@ -45,7 +54,7 @@ namespace webui.Service
             TodoItemDTO todoItem = new TodoItemDTO();
             using (var httpClient = new HttpClient())
             {
-                httpClient.BaseAddress = new Uri("https://localhost:44314");
+                httpClient.BaseAddress = _apiBaseUri;
                 using (var response = await httpClient.GetAsync("/api/TodoItems/" + todoItemId))
                 {
                     response.EnsureSuccessStatusCode();
@@ -60,7 +69,7 @@ namespace webui.Service
         {
             using (var httpClient = new HttpClient())
             {
-                httpClient.BaseAddress = new Uri("https://localhost:44314");
+                httpClient.BaseAddress = _apiBaseUri;
                 var response = await httpClient.PutAsync("/api/TodoItems/" + editItem.Id,
                                                             new StringContent(JsonConvert.SerializeObject(editItem),
                                                                                 Encoding.UTF8,
@@ -73,7 +82,7 @@ namespace webui.Service
         {
             using (var httpClient = new HttpClient())
             {
-                httpClient.BaseAddress = new Uri("https://localhost:44314");
+                httpClient.BaseAddress = _apiBaseUri;
                 var response = await httpClient.DeleteAsync("/api/TodoItems/" + todoItemId);
                 response.EnsureSuccessStatusCode();
             }
@@ -85,7 +94,7 @@ namespace webui.Service
             List<FeatureFlagDTO> featureFlags = new List<FeatureFlagDTO>();
             using (var httpClient = new HttpClient())
             {
-                httpClient.BaseAddress = new Uri("https://localhost:44314");
+                httpClient.BaseAddress = _apiBaseUri;
                 using (var response = await httpClient.GetAsync("/api/TodoFeatureFlags"))
                 {
                     response.EnsureSuccessStatusCode();
