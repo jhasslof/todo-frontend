@@ -23,7 +23,7 @@ namespace webui.Service
             };
             SupportedFeatureFlagsData = new List<FeatureFlagDTO>()
             {
-                new FeatureFlagDTO { Key = "todo-extra-info" }
+                new FeatureFlagDTO { Key = "ta-7-notes-web-ui" }
             };
         }
 
@@ -51,7 +51,7 @@ namespace webui.Service
                     {
                         item.Name = editItem.Name;
                         item.IsComplete = editItem.IsComplete;
-                        item.Note = editItem.Note;
+                        item.Notes = editItem.Notes;
                     }
                     else { throw new ApplicationException($"Error saving '{editItem.Name}'. Item Id #{editItem.Id} not found."); }
                 }

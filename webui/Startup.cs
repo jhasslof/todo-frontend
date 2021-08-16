@@ -25,13 +25,14 @@ namespace webui
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<ITodoServiceAsyncContext, TodoServiceRestContext>();
+            services.AddScoped<IFeatureFlags>(p => new FeatureFlags(p.GetRequiredService<IConfiguration>(), p.GetRequiredService<ITodoServiceAsyncContext>()));
             services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            if (env.IsDevelopment() || env.IsEnvironment("Local"))
             {
                 app.UseDeveloperExceptionPage();
             }

@@ -6,6 +6,6 @@
         public string Name { get; set; } = "";
         public bool IsComplete { get; set; } = false;
         public string ErrorMessage { get; set; } = "";
-        public string Note { get; set; } = "";
+        public string Notes { get; set; } = "";
     }
 }

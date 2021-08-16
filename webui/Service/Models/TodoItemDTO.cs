@@ -10,7 +10,7 @@ namespace webui.Service.Models
         public long Id { get; set; } = 0;
         public string Name { get; set; } = "";
         public bool IsComplete { get; set; } = false;
-        public string Note { get; set; } = "";
+        public string Notes { get; set; } = "";
     }
 
     public class FeatureFlagDTO

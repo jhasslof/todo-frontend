@@ -6,7 +6,7 @@ namespace webui.Models
 {
     public class TodoViewModel : ViewModelWithFeatureFlags
     {
-        public TodoViewModel(IEnumerable<FeatureFlagViewModel> featureFlags):base(featureFlags)
+        public TodoViewModel(IFeatureFlags featureFlags):base(featureFlags)
         {
         }
 
