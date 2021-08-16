@@ -1,7 +1,9 @@
 # ASP.NET Core MVC demo application with Selenium UI tests
+
 [![Build Status](https://ketchdigital.visualstudio.com/todo-AppService/_apis/build/status/jhasslof.todo-frontend?branchName=main)](https://ketchdigital.visualstudio.com/todo-AppService/_build?definitionId=22)
 
 ## Acknowledgements
+
 Thanks to:
 * Scott Hansleman for getting me started on selenium-standalone in [BrowserIntegrationTesting with selenium](https://www.hanselman.com/blog/RealBrowserIntegrationTestingWithSeleniumStandaloneChromeAndASPNETCore21.aspx)
 * Bertrand Thomas for the updates needed for [Quick fix for integration testing with Selenium in ASP.NET Core 3.1](https://blog-bertrand-thomas.devpro.fr/2020/01/27/fix-breaking-change-asp-net-core-3-integration-tests-selenium/)
