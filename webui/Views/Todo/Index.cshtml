@@ -5,9 +5,9 @@
 }
 
 @{
-    if (Model.FeatureFlagIsActive("new-welcome-message"))
+    if (Model.FeatureFlags.FeatureFlagIsActive("new-welcome-message"))
     {
-        <h1 class="display-4" id="ListHeadline">The cool todo list</h1>
+        <h1 class="display-3" style="background-color: #c3f0ff" id="ListHeadline">The cool todo list</h1>
     }
     else
     {
@@ -34,10 +34,10 @@
                 @Html.DisplayNameForInnerType((webui.Models.TodoItemViewModel itemsModel) => itemsModel.IsComplete)
             </th>
             @{
-                if (Model.FeatureFlagIsActive("todo-extra-info"))
+                if (Model.FeatureFlags.FeatureFlagIsActive("ta-7-notes-web-ui"))
                 {
                     <th>
-                        @Html.DisplayNameForInnerType((webui.Models.TodoItemViewModel itemsModel) => itemsModel.Note)
+                        @Html.DisplayNameForInnerType((webui.Models.TodoItemViewModel itemsModel) => itemsModel.Notes)
                     </th>
                 }
             }
@@ -58,10 +58,10 @@
                     @Html.DisplayFor(modelItem => item.IsComplete)
                 </td>
                 @{
-                    if (Model.FeatureFlagIsActive("todo-extra-info"))
+                    if (Model.FeatureFlags.FeatureFlagIsActive("ta-7-notes-web-ui"))
                     {
                         <td>
-                            @Html.DisplayFor(modelItem => item.Note)
+                            @Html.DisplayFor(modelItem => item.Notes)
                         </td>
                     }
                 }

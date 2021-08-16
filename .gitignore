@@ -1,7 +1,7 @@
 # Custom git ignors
 webui.LoadTest/results/
 package-lock.json
-appsettings.Development.json
+appsettings.*.json
 [Mm]icrosoft/
 
 # The 5 approved on boarding samples that need wwwroot/lib/ can add a local .gitignore that allows wwwroot/lib/.

@@ -24,12 +24,12 @@
                 </label>
             </div>
             @{
-                if (Model.FeatureFlagIsActive("todo-extra-info"))
+                if (Model.FeatureFlags.FeatureFlagIsActive("ta-7-notes-web-ui"))
                 {
                     <div class="form-group">
-                        <label asp-for="TodoItem.Note" class="control-label"></label>
-                        <input asp-for="TodoItem.Note" class="form-control" />
-                        <span asp-validation-for="TodoItem.Note" class="text-danger"></span>
+                        <label asp-for="TodoItem.Notes" class="control-label"></label>
+                        <input asp-for="TodoItem.Notes" class="form-control" />
+                        <span asp-validation-for="TodoItem.Notes" class="text-danger"></span>
                     </div>
                 }
             }

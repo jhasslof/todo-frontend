@@ -32,13 +32,13 @@
             @Html.DisplayNameForInnerType((webui.Models.TodoItemViewModel itemsModel) => itemsModel.ErrorMessage)
         </dt>
         @{
-            if (Model.FeatureFlagIsActive("todo-extra-info"))
+            if (Model.FeatureFlags.FeatureFlagIsActive("ta-7-notes-web-ui"))
             {
                 <dt class="col-sm-2">
-                    @Html.DisplayNameForInnerType((webui.Models.TodoItemViewModel itemsModel) => itemsModel.Note)
+                    @Html.DisplayNameForInnerType((webui.Models.TodoItemViewModel itemsModel) => itemsModel.Notes)
                 </dt>
                 <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.TodoItem.Note)
+                    @Html.DisplayFor(model => model.TodoItem.Notes)
                 </dd>
             }
         }

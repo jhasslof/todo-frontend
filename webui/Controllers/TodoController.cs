@@ -20,16 +20,20 @@ namespace webui.Controllers
         IConfiguration _configuration;
         private string _version;
         private string _environment;
-        private IEnumerable<FeatureFlagViewModel> _featureFlagsInUse;
+        private readonly IFeatureFlags _featureFlagsInUse;
 
-        public TodoController(ILogger<TodoController> logger, ITodoServiceAsyncContext serviceContext, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
+        public TodoController(ILogger<TodoController> logger, 
+                              ITodoServiceAsyncContext serviceContext, 
+                              IConfiguration configuration, 
+                              IWebHostEnvironment webHostEnvironment,
+                              IFeatureFlags featureFlags)
         {
             _configuration = configuration;
             _logger = logger;
             _serviceAgent = new TodoServiceAsyncAgent(serviceContext);
-            _featureFlagsInUse = FeatureFlags.GetFeatureFlagsInUse(configuration, _serviceAgent);
             _version = configuration["TodoControllerVersion"];
             _environment = webHostEnvironment.EnvironmentName;
+            _featureFlagsInUse = featureFlags;
         }
 
 
