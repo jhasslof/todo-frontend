@@ -84,7 +84,7 @@ namespace webui.Service
 
         public async Task<IEnumerable<FeatureFlagDTO>> SupportedFeatureFlags()
         {
-            if(SupportedFeatureFlagsData == null)
+            if (SupportedFeatureFlagsData == null)
             {
                 return await Task.Run(() => new List<FeatureFlagDTO>().ToArray());
             }
