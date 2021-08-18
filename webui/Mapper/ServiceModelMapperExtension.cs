@@ -17,10 +17,6 @@ namespace webui.Mapper
             todoItem.Id = item.TodoItem.Id; // > 0 ? item.TodoItem.Id : (long?)null;
             todoItem.Name = item.TodoItem.Name;
             todoItem.IsComplete = item.TodoItem.IsComplete;
-            if (item.FeatureFlags.FeatureFlagIsActive("ta-7-notes-web-ui"))
-            {
-                todoItem.Notes = item.TodoItem.Notes;
-            }
             return todoItem;
         }
     }
