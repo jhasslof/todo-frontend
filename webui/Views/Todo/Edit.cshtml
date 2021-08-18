@@ -27,16 +27,6 @@
                     <input class="form-check-input" asp-for="TodoItem.IsComplete" /> @Html.DisplayNameForInnerType((webui.Models.TodoItemViewModel itemsModel) => itemsModel.IsComplete)
                 </label>
             </div>
-            @{
-                if (Model.FeatureFlags.FeatureFlagIsActive("ta-7-notes-web-ui"))
-                {
-                    <div class="form-group">
-                        <label asp-for="TodoItem.Notes" class="control-label"></label>
-                        <input asp-for="TodoItem.Notes" class="form-control" />
-                        <span asp-validation-for="TodoItem.Notes" class="text-danger"></span>
-                    </div>
-                }
-            }
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

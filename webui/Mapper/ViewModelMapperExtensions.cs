@@ -12,10 +12,6 @@ namespace webui.Mapper
             foreach (var serviceItem in serviceItems)
             {
                 var todoItem = new Models.TodoItemViewModel().Map(serviceItem);
-                if (todoVm.FeatureFlags.FeatureFlagIsActive("ta-7-notes-web-ui"))
-                {
-                    todoItem.MapTodoExtraInfo(serviceItem);
-                }
                 vmTodoItems.Add(todoItem);
             }
             todoVm.TodoItems = vmTodoItems;
@@ -29,19 +25,10 @@ namespace webui.Mapper
             todoItemVm.IsComplete = serviceItem.IsComplete;
             return todoItemVm;
         }
-        public static Models.TodoItemViewModel MapTodoExtraInfo(this Models.TodoItemViewModel todoItemVm, Service.Models.TodoItemDTO serviceItem)
-        {
-            todoItemVm.Notes = serviceItem.Notes;
-            return todoItemVm;
-        }
 
         public static Models.TodoItemDetailsViewModel Map(this Models.TodoItemDetailsViewModel todoItemDetailsVm, Service.Models.TodoItemDTO serviceItem)
         {
             todoItemDetailsVm.TodoItem = new Models.TodoItemViewModel().Map(serviceItem);
-            if (todoItemDetailsVm.FeatureFlags.FeatureFlagIsActive("ta-7-notes-web-ui"))
-            {
-                todoItemDetailsVm.TodoItem.MapTodoExtraInfo(serviceItem);
-            }
             
             return todoItemDetailsVm;
         }
@@ -56,10 +43,6 @@ namespace webui.Mapper
                 ErrorMessage = (ex == null ? "" : ex.Message)
             };
             
-            if (todoItemDetailsVm.FeatureFlags.FeatureFlagIsActive("ta-7-notes-web-ui"))
-            {
-                todoItemDetailsVm.TodoItem.Notes = collection["TodoItem.Notes"];
-            }
             return todoItemDetailsVm;
         }
 
