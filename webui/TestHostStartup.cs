@@ -25,6 +25,7 @@ namespace webui
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<ITodoServiceAsyncContext, TodoServiceInMemoryAsyncContext>();
+            services.AddScoped<IFeatureFlags>(p => new FeatureFlags(p.GetRequiredService<IConfiguration>(), p.GetRequiredService<ITodoServiceAsyncContext>()));
             services.AddControllersWithViews();
         }
 
