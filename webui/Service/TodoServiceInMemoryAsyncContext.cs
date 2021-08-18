@@ -23,7 +23,7 @@ namespace webui.Service
             };
             SupportedFeatureFlagsData = new List<FeatureFlagDTO>()
             {
-                new FeatureFlagDTO { Key = "ta-7-notes-web-ui" }
+                new FeatureFlagDTO { Key = "ta-10-notes-web-ui" }
             };
         }
 

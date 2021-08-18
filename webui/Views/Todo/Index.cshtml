@@ -34,7 +34,7 @@
                 @Html.DisplayNameForInnerType((webui.Models.TodoItemViewModel itemsModel) => itemsModel.IsComplete)
             </th>
             @{
-                if (Model.FeatureFlags.FeatureFlagIsActive("ta-7-notes-web-ui"))
+                if (Model.FeatureFlags.FeatureFlagIsActive("ta-10-notes-web-ui"))
                 {
                     <th>
                         @Html.DisplayNameForInnerType((webui.Models.TodoItemViewModel itemsModel) => itemsModel.Notes)
@@ -58,7 +58,7 @@
                     @Html.DisplayFor(modelItem => item.IsComplete)
                 </td>
                 @{
-                    if (Model.FeatureFlags.FeatureFlagIsActive("ta-7-notes-web-ui"))
+                    if (Model.FeatureFlags.FeatureFlagIsActive("ta-10-notes-web-ui"))
                     {
                         <td>
                             @Html.DisplayFor(modelItem => item.Notes)

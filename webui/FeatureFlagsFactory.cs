@@ -17,9 +17,9 @@ namespace webui
         private readonly static IEnumerable<FeatureFlagViewModel> _webuiSupportedFeatureFlags = new[] {
             new FeatureFlagViewModel { Key = "new-welcome-message" },
             new FeatureFlagViewModel {
-                Key = "ta-7-notes-web-ui",
+                Key = "ta-10-notes-web-ui",
                 PreReqKeys = new List<FeatureFlagViewModel>{
-                    new FeatureFlagViewModel { Key = "ta-7-notes-api" }
+                    new FeatureFlagViewModel { Key = "ta-10-notes-todo-data-api" }
                 }
             }
         };

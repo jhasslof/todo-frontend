@@ -12,7 +12,7 @@ namespace webui.Mapper
             foreach (var serviceItem in serviceItems)
             {
                 var todoItem = new Models.TodoItemViewModel().Map(serviceItem);
-                if (todoVm.FeatureFlags.FeatureFlagIsActive("ta-7-notes-web-ui"))
+                if (todoVm.FeatureFlags.FeatureFlagIsActive("ta-10-notes-web-ui"))
                 {
                     todoItem.MapTodoExtraInfo(serviceItem);
                 }
@@ -38,7 +38,7 @@ namespace webui.Mapper
         public static Models.TodoItemDetailsViewModel Map(this Models.TodoItemDetailsViewModel todoItemDetailsVm, Service.Models.TodoItemDTO serviceItem)
         {
             todoItemDetailsVm.TodoItem = new Models.TodoItemViewModel().Map(serviceItem);
-            if (todoItemDetailsVm.FeatureFlags.FeatureFlagIsActive("ta-7-notes-web-ui"))
+            if (todoItemDetailsVm.FeatureFlags.FeatureFlagIsActive("ta-10-notes-web-ui"))
             {
                 todoItemDetailsVm.TodoItem.MapTodoExtraInfo(serviceItem);
             }
@@ -56,7 +56,7 @@ namespace webui.Mapper
                 ErrorMessage = (ex == null ? "" : ex.Message)
             };
             
-            if (todoItemDetailsVm.FeatureFlags.FeatureFlagIsActive("ta-7-notes-web-ui"))
+            if (todoItemDetailsVm.FeatureFlags.FeatureFlagIsActive("ta-10-notes-web-ui"))
             {
                 todoItemDetailsVm.TodoItem.Notes = collection["TodoItem.Notes"];
             }
