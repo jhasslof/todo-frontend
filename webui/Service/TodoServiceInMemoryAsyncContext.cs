@@ -21,6 +21,10 @@ namespace webui.Service
                 new TodoItemDTO{Id = 3, Name = "Code new demo", IsComplete = false},
                 new TodoItemDTO{Id = 4, Name = "Make dinner", IsComplete = false},
             };
+            SupportedFeatureFlagsData = new List<FeatureFlagDTO>()
+            {
+                new FeatureFlagDTO { Key = "ta-10-notes-web-ui" }
+            };
         }
 
         // Simulate calling api service to get todo data
@@ -47,6 +51,7 @@ namespace webui.Service
                     {
                         item.Name = editItem.Name;
                         item.IsComplete = editItem.IsComplete;
+                        item.Notes = editItem.Notes;
                     }
                     else { throw new ApplicationException($"Error saving '{editItem.Name}'. Item Id #{editItem.Id} not found."); }
                 }
